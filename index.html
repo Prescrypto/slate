@@ -244,13 +244,234 @@ is being traded, and will vary depending on asset class. This is a common subjec
 <p>The ‘SENDER’ data subject will identify what user or systematic process is providing information specific to the event.
 This is a common subject across all Portware events.</p>
 
+<p>Below describe attributes for those three main subjects that should be repetead by every endpoint</p>
+
+<p>ORDER_ATTRIBUTES</p>
+
+<p>Scope : A block will be included for both CURRENT &amp; PREVIOUS state.</p>
+
+<p>The description for each attribute under the &lsquo;ORDER_ATTRIBUTES&rsquo; data subject are as follows:</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>PROGRAM_ID</td>
+<td>The Program ID of the Portware Basket.</td>
+</tr>
+<tr>
+<td>PARENT_ID</td>
+<td>The Parent ID representing the order.</td>
+</tr>
+<tr>
+<td>QUANTITY</td>
+<td>The Order Quantity submitted on the order.</td>
+</tr>
+<tr>
+<td>SIDE</td>
+<td>The side of the order (i.e.B/S/SS).</td>
+</tr>
+<tr>
+<td>PRICE</td>
+<td>The price provided on the order.</td>
+</tr>
+<tr>
+<td>PRICE_TYPE_QUALIFIER</td>
+<td>Held, Not Held TIF GTC, Day, GTD</td>
+</tr>
+<tr>
+<td>EXPIRY</td>
+<td>Expiry of the order.</td>
+</tr>
+<tr>
+<td>SETTLEMENT_DATE</td>
+<td>Settlement date of the order.</td>
+</tr>
+<tr>
+<td>CCY_PAIR</td>
+<td>If the event is associated with an FX order, currency pair will be included.</td>
+</tr>
+<tr>
+<td>FIXING_DATE</td>
+<td>If the event is associated with an FX NDF order, fixing date will be included.</td>
+</tr>
+<tr>
+<td>ORDER_TYPE</td>
+<td>Stop, Stop Limit, Limit Market</td>
+</tr>
+<tr>
+<td>STOP_PRICE</td>
+<td>Stop price if the</td>
+</tr>
+<tr>
+<td>ORDER_TYPE</td>
+<td>It is stop limit.</td>
+</tr>
+<tr>
+<td>PAR_VALUE</td>
+<td>Included if the order is specific to Fixed Income.</td>
+</tr>
+<tr>
+<td>MATURITY_DATE</td>
+<td>The Maturity date of a Fixed income or futures contract.</td>
+</tr>
+<tr>
+<td>STRIKE_PRICE</td>
+<td>The strike price of an options contract.</td>
+</tr>
+<tr>
+<td>EXECUTED_VOLUME</td>
+<td>The volume executed at the time of an event.</td>
+</tr>
+<tr>
+<td>COMMITTED_VOLUME</td>
+<td>Any remaining quantity currently allocated to a service / broker at the time of an event.</td>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>The current owner of the order.</td>
+</tr>
+<tr>
+<td>ORDER_ATTRIBUTE_ID</td>
+<td>ID assigned to the ORDER_ATTRIBUTES block.</td>
+</tr>
+</tbody></table>
+
+<p>ALLOCATION attribute repeats for each account provided</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ALLOCATION_ACCOUNT</td>
+<td>The allocations associated with the incoming order.</td>
+</tr>
+<tr>
+<td>ALLOCATION_QUANTITY</td>
+<td>The quantity associated with the referenced account.</td>
+</tr>
+</tbody></table>
+
+<p>SECURITY</p>
+
+<p>Scope : A block will only be included for the CURRENT state. Information provided will be consistent across the entire order lifecycle.
+The description for each attribute under the &lsquo;SECURITY&rsquo; data subject are as follows:</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>METADATA_STRING</td>
+<td> A combination of Currency Pair, Near Date, and Far Date (in the case of a swap), and the time entered.</td>
+</tr>
+<tr>
+<td>SEDOL</td>
+<td> The SEDOL of an equity.</td>
+</tr>
+<tr>
+<td>OCC_Symbol</td>
+<td> The OCC Symbol for an equity option.</td>
+</tr>
+<tr>
+<td>TICKER</td>
+<td> The ticker of the futures contract.</td>
+</tr>
+<tr>
+<td>Instrument_Symbol</td>
+<td> The Symbol of the bond or index.</td>
+</tr>
+<tr>
+<td>SECURITY_ID</td>
+<td> ID assigned to the SECURITY block.</td>
+</tr>
+</tbody></table>
+
+<p>SENDER</p>
+
+<p>Scope : A block will only be included for the CURRENT state.</p>
+
+<p>The description for each attribute under the &lsquo;SENDER&rsquo; data subject are as follows:</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>FIRM_ID</td>
+<td>ID representing the FIRM to which an order is associated.</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>ID of the user that actioned the event. This can either be a system ID or user ID.</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>The timestamp at which the event is generated.</td>
+</tr>
+<tr>
+<td>SENDER_ID</td>
+<td>ID assigned to the SENDER block.</td>
+</tr>
+</tbody></table>
+
 <h2 id="new-order">New order</h2>
 
 <p><code class="prettyprint">POST api/v1/order/</code></p>
 
-<p>The attribute NEW_ORDER represents a new order at the inception of the order lifecycle. ORDER_STATUS_ID is the ID assigned to the ORDER_STATUS block.</p>
-
 <p>The <code class="prettyprint">&#39;ORDER_STATUS&#39;</code> data subject provides the state of the order within the lifecycle; both current and previous.</p>
+
+<p>The description for each attribute under the &lsquo;ORDER_STATUS&rsquo; data subject are as follows:</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>NEW_ORDER</td>
+<td>Represents a new order at the inception of the order lifecycle.</td>
+</tr>
+<tr>
+<td>ORDER_AMEND</td>
+<td>Represents an amendment to an order&rsquo;s attributes.</td>
+</tr>
+<tr>
+<td>ORDER_CANCEL</td>
+<td>Represents the cancellation of an order.</td>
+</tr>
+<tr>
+<td>ORDER_COMPLETE</td>
+<td>Represents the completion of an order.</td>
+</tr>
+<tr>
+<td>SENT_TO_TRADE</td>
+<td>Represents an order passing compliance, and being sent to trade.</td>
+</tr>
+<tr>
+<td>PARENT_ORDER_CREATION</td>
+<td>Represents the activation of the order following the &lsquo;SENT_TO_TRADE&rsquo; event.</td>
+</tr>
+<tr>
+<td>ARCHIVE</td>
+<td>Represents an order&rsquo;s archival.</td>
+</tr>
+<tr>
+<td>ORDER_STATUS_ID</td>
+<td>ID assigned to the ORDER_STATUS block.</td>
+</tr>
+</tbody></table>
 
 <blockquote>
 <p>To create new Order, use this code:</p>
@@ -287,7 +508,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -318,10 +539,6 @@ curl -X POST <span class="se">\</span>
 <blockquote>
 <p>Change {base_url} with main domain and {url} with corresponding endpoint url</p>
 </blockquote>
-
-<aside class="notice">
-Just sure to have the correct credentials every endpoint
-</aside>
 
 <h2 id="order-amend">Order amend</h2>
 
@@ -366,7 +583,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -443,7 +660,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -535,7 +752,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -608,7 +825,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -683,7 +900,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -765,7 +982,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -927,7 +1144,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1024,7 +1241,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1106,7 +1323,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1175,7 +1392,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1245,7 +1462,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1315,7 +1532,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1417,7 +1634,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1497,7 +1714,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1577,7 +1794,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1700,7 +1917,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1793,7 +2010,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
@@ -1862,7 +2079,7 @@ curl -X POST <span class="se">\</span>
           "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
         },
         "</span>SECURITY<span class="s2">": {
-          "</span>CCY_PAIR_NEAR_DATE_FAR_DATE_ENTERED_TIMESTAMP<span class="s2">": "",
+          "</span>METADATA_STRING<span class="s2">": "",
           "</span>SEDOL<span class="s2">": "",
           "</span>OCC_Symbol<span class="s2">": "",
           "</span>TICKER<span class="s2">": "",
