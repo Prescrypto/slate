@@ -324,6 +324,8 @@ Just sure to have the correct credentials every endpoint
 
 <p><code class="prettyprint">PUT api/v1/order/{order_id}/ammend</code></p>
 
+<p><code class="prettyprint">Scope</code> A block will be included for both CURRENT &amp; PREVIOUS state.</p>
+
 <blockquote>
 <p>To create Ammend Order, use this code:</p>
 </blockquote>
@@ -395,6 +397,8 @@ curl -X POST <span class="se">\</span>
 
 <p><code class="prettyprint">PUT api/v1/order/{order_id}/cancel</code>
 <code class="prettyprint">PUT api/v1/order/{order_id}/complete</code></p>
+
+<p><code class="prettyprint">Scope</code> A block will be included for both CURRENT &amp; PREVIOUS state.</p>
 
 <blockquote>
 <p>To create Cancel/Complete Order, use this code:</p>
@@ -470,6 +474,8 @@ curl -X POST <span class="se">\</span>
 <p>The <code class="prettyprint">&#39;COMPLIANCE&#39;</code> data subject provides a repeating status of compliance checks performed during the order lifecycle.
 For every rule applied, a type; rule description; status; and plain English result text will be provided.</p>
 
+<p><code class="prettyprint">Scope</code> Repeats per compliance rule applied to an order, and provides the result.</p>
+
 <blockquote>
 <p>To create compliance, use this code:</p>
 </blockquote>
@@ -538,6 +544,8 @@ curl -X POST <span class="se">\</span>
 <h2 id="sent-to-trade">Sent to trade</h2>
 
 <p><code class="prettyprint">POST api/v1/order/{order_id}/sent_to_trade</code></p>
+
+<p><code class="prettyprint">Scope</code> A block will be included for both CURRENT &amp; PREVIOUS state.</p>
 
 <blockquote>
 <p>To create sent to trade Order, use this code:</p>
@@ -610,6 +618,8 @@ curl -X POST <span class="se">\</span>
 
 <p><code class="prettyprint">POST api/v1/order/{order_id}/parent_creation</code></p>
 
+<p><code class="prettyprint">Scope</code> A block will be included for both CURRENT &amp; PREVIOUS state.</p>
+
 <blockquote>
 <p>To create Parent creation Order, use this code:</p>
 </blockquote>
@@ -680,6 +690,15 @@ curl -X POST <span class="se">\</span>
 <h1 id="assign-adquire">Assign / adquire</h1>
 
 <p><code class="prettyprint">POST api/v1/order/{order_id}/assign</code></p>
+
+<p>The <code class="prettyprint">&#39;ORDER_ATTRIBUTES&#39;</code> data subject provides the fundamentals of the order, and may vary depending on asset class.
+Both the current &amp; previous version will be provided. This is a common subject across all Portware events.</p>
+
+<p>The <code class="prettyprint">&#39;SECURITY&#39;</code> data subject provides the underlying Instrument of the order. This will uniquely identify what instrument
+is being traded, and will vary depending on asset class. This is a common subject across all Portware events.</p>
+
+<p>The ‘SENDER’ data subject will identify what user or systematic process is providing information specific to the event.
+This is a common subject across all Portware events.</p>
 
 <blockquote>
 <p>To create Assign/adquire Order, use this code:</p>
@@ -1526,6 +1545,15 @@ curl -X POST <span class="se">\</span>
 <h1 id="archive">archive</h1>
 
 <p><code class="prettyprint">POST api/v1/executions/archive</code></p>
+
+<p>The <code class="prettyprint">&#39;ORDER_ATTRIBUTES&#39;</code> data subject provides the fundamentals of the order, and may vary depending on asset class.
+Both the current &amp; previous version will be provided. This is a common subject across all Portware events.</p>
+
+<p>The <code class="prettyprint">&#39;SECURITY&#39;</code> data subject provides the underlying Instrument of the order. This will uniquely identify what instrument
+is being traded, and will vary depending on asset class. This is a common subject across all Portware events.</p>
+
+<p>The ‘SENDER’ data subject will identify what user or systematic process is providing information specific to the event.
+This is a common subject across all Portware events.</p>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
   -d <span class="s2">"{
