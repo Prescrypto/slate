@@ -1,0 +1,78 @@
+<h1 id="snapshot">Snapshot</h1>
+
+<h2 id="get-snapshot">Get Snapshot</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/snapshots/d0691c48-ad21-45db-bbd6-f32aa264d1ad
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+
+<p>Use this method to obtain a full download of the data stored on a Client’s Device or collection of Devices. This data can then be given to an auditor for analysis.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/snapshots/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Id of the desired snapshot</td>
+</tr>
+</tbody></table>
+
+<h2 id="start-building-snapshot">Start Building Snapshot</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"phone": "3752901234567"}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/snapshots
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"snapshot"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to initiate the process of building a Snapshot. This starts the background task of dumping the blockchain and returns an id of this task.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/system/snapshots</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>phone</td>
+<td>String</td>
+<td>Phone number, to which SMS notification will be send, with private key to decrypt snapshot</td>
+</tr>
+</tbody></table>

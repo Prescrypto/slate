@@ -233,6 +233,32 @@ To get started, you will first need to change the base url {base_url} on our web
 
 <p>In this API Documentation, you will notice that each data subject contains 3 components.  The “subject name” refers to the block name, “scope” is the frequency of which a block is provided for the data subject, and “attributes” are the contents of each data subject. As the ComplianceGuard API is based on an event-driven architecture, each event will be represented by one or more data subjects based on the Lifecyle of an order.</p>
 
+<h1 id="anticipated-api-users">Anticipated API users</h1>
+
+<p>There are 4 main roles that are accounted for in this API:</p>
+
+<ul>
+<li><p>ComplianceGuard Developers – The CGBlockchain Development Team</p></li>
+<li><p>Clients – Hedge Funds that install ComplianceGuard</p></li>
+<li><p>Integrators- Companies that connect ComplianceGuard with the software used by the Client (their EMS or OMS)</p></li>
+<li><p>Software Provider – The provider of an EMS or OMS solution</p></li>
+</ul>
+
+<h1 id="terminology">Terminology</h1>
+
+<p>Some clarity about our use of terms may be helpful to familiarize the newcomer with how our API works. Devices refer to ComplianceGuard hardware units. Each Client may have numerous Devices. Entities are categories of data that ComplianceGuard records and stores (such as business conduct rules, execution mandates, compliance alerts, etc.). Entities are constructed through the intermediate state of Drafts, which automatically become Entities when they have been finalized. Each particular Entity is made up of a set of Fields. Entries are Fields where the Client will push data into ComplianceGuard (such as particular instances of compliance alerts or transactions).</p>
+
+<h1 id="authentication">Authentication</h1>
+
+<p>ComplianceGuard is flexible on authentication, it highly depends on each client&rsquo;s requirements. Current version supports following basic authentication mechanisms:</p>
+
+<ul>
+<li><p>providing authentication token by HTTP header Authorization;</p></li>
+<li><p>signing all HTTP requests by client&rsquo;s certificate.</p></li>
+</ul>
+
+<p>In general, agreement on authentication schema is topic for close conversation with Integrators.</p>
+
 <h1 id="order">Order</h1>
 
 <p>The <code class="prettyprint">&#39;ORDER_ATTRIBUTES&#39;</code> data subject provides the fundamentals of the order, and may vary depending on asset class.
@@ -1645,6 +1671,2880 @@ curl -X POST <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
+          <h1 id="devices">Devices</h1>
+
+<h2 id="add-new-device">Add new Device</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"name": "cgbox1", "hash": "0x0004a1af9de734f8ddab0d47c803cf301038d874"}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/device
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"device"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cgbox1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="s2">"0x0004a1af9de734f8ddab0d47c803cf301038d874"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Used to establish a new ComplianceGuard hardware unit. This endpoint stores the new Device’s info to the ComplianceGuard database for authorization. Normally the Integrator who is connecting an EMS or OMS to ComplianceGuard does this.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/system/devices</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Human-readable name of device</td>
+</tr>
+<tr>
+<td>hash</td>
+<td>String</td>
+<td>Blockchain hash of an account, associated with this device</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-device">Get Device</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/devices/d0691c48-ad21-45db-bbd6-f32aa264d1ad
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"device"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cgbox1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="s2">"0x0004a1af9de734f8ddab0d47c803cf301038d874"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint will return the basic information about the Device.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/devices/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Id</td>
+<td>String</td>
+<td>Id of the desired device</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-list-of-devices">Get list of Devices</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/devices?name<span class="o">=</span>cgbox1&amp;limit<span class="o">=</span>5
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"devices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cgbox1"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"hash"</span><span class="p">:</span><span class="s2">"0x0004a1af9de734f8ddab0d47c803cf301038d874"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an array of all the Devices defined in one Client’s system.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/devices</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>[Optional] Human-readable name of device</td>
+</tr>
+<tr>
+<td>hash</td>
+<td>String</td>
+<td>[Optional] Blockchain hash of an account, associated with this device</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched devices. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of devices to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="update-device">Update Device</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X PUT <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"name": "cgbox2"}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/devices/d0691c48-ad21-45db-bbd6-f32aa264d1ad
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"device"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cgbox2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="s2">"0x0004a1af9de734f8ddab0d47c803cf301038d874"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to updates the information about a specific Device.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT /api/v1/system/devices/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>String</td>
+<td>of the desired device</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-device">Delete Device</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X DELETE <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/devices/d0691c48-ad21-45db-bbd6-f32aa264d1ad
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to delete the information about a specific Device.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE /api/v1/system/devices/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>String</td>
+<td>of the desired device</td>
+</tr>
+</tbody></table>
+
+          <h1 id="draft">Draft</h1>
+
+<h2 id="add-draft">Add Draft</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -d <span class="s1">'{"name": "logbook", "mixins": [], "fields": [{"name": "incident", "type": "text"}]}'</span> <span class="se">\</span>
+  https://compliance-guard.lan/api/v1/drafts
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"draft"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"incident"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to construct new Entities or new versions of an Entity.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/drafts</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Name of the draft</td>
+</tr>
+<tr>
+<td>mixins</td>
+<td>String[]</td>
+<td>Array of used mixins</td>
+</tr>
+<tr>
+<td>fields</td>
+<td>String[]</td>
+<td>Array of fields, which entries of this type will have</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-draft">Get Draft</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/drafts/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"draft"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"incident"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to get the information about a Draft.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/drafts/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the desired draft</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-list-of-drafts">Get list of Drafts</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entities?name<span class="o">=</span>logbook&amp;limit<span class="o">=</span>5
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"drafts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+          </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"incident"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns a list of all the current Drafts.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/drafts</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>[Optional] Name of the desired draft</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of drafts to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="update-draft">Update Draft</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X PUT <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"name": "logbook", "mixins": [], "fields": [{"name": "timestamp", "type": "date"}]}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/drafts/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"draft"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"timestamp"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to update a Draft.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT /api/v1/drafts/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the desired draft</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>[Optional] New name of the draft</td>
+</tr>
+<tr>
+<td>mixins</td>
+<td>String[]</td>
+<td>[Optional] New array of used mixins</td>
+</tr>
+<tr>
+<td>fields</td>
+<td>String[]</td>
+<td>[Optional] New array of fields, which entries of this type will have</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-draft">Delete Draft</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X DELETE <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/drafts/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to delete a Draft.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE /api/v1/drafts/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>String</td>
+<td>of the desired draft</td>
+</tr>
+</tbody></table>
+
+          <h1 id="field">Field</h1>
+
+<h2 id="add-field">Add Field</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"name":"text", "type":"text", "encodings":["utf8", "ascii", "base64", "binary"], "transformers":["trim", "replace"], "validators":["notEmpty", "maxLength", "minLength"]}'</span> <span class="se">\</span>
+   <span class="s2">"https://compliance-guard.lan/api/v1/fields"</span>
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"validators"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"notEmpty"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"maxLength"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"minLength"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"transformers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"trim"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"replace"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"encodings"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"utf8"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"ascii"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"base64"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"binary"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint adds a Field, that can later be used to describe as part of an Entity structure.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/fields</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Field name</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Base types associated to this field</td>
+</tr>
+<tr>
+<td>encodings</td>
+<td>String[]</td>
+<td>Available encodings</td>
+</tr>
+<tr>
+<td>transformers</td>
+<td>String[]</td>
+<td>Available transformers</td>
+</tr>
+<tr>
+<td>validators</td>
+<td>String[]</td>
+<td>Available validators</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-field">Get Field</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/fields/text
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"validators"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"notEmpty"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"maxLength"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"minLength"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"transformers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"trim"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"replace"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"encodings"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"utf8"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"ascii"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"base64"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"binary"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns a Field, by its given Name.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/fields/&lt;name&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Field name</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-list-of-fields">Get list of Fields</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/fields?limit<span class="o">=</span>5
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="w">
+          </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"validators"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"notEmpty"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"maxLength"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"minLength"</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+          </span><span class="s2">"transformers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"trim"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"replace"</span><span class="w">
+           </span><span class="p">],</span><span class="w">
+          </span><span class="s2">"encodings"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"utf8"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"ascii"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"base64"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"binary"</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an array of Fields</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/fields</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of drafts to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="update-field">Update Field</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X PUT <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"name":"text", "type":"text", "encodings":["utf8", "ascii", "base64", "binary"], "transformers":["trim", "replace"], "validators":["notEmpty", "maxLength", "minLength"]}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/drafts/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"validators"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"notEmpty"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"maxLength"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"minLength"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"transformers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"trim"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"replace"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"encodings"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"utf8"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"ascii"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"base64"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"binary"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to update a Field.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT /api/v1/fields/&lt;name&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Field name</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>[Optional] Base types associated to this field</td>
+</tr>
+<tr>
+<td>encodings</td>
+<td>String[]</td>
+<td>[Optional] Available encodings</td>
+</tr>
+<tr>
+<td>transformers</td>
+<td>String[]</td>
+<td>[Optional] Available transformers</td>
+</tr>
+<tr>
+<td>validators</td>
+<td>String[]</td>
+<td>[Optional] Available validators</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-field">Delete Field</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X DELETE <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/fields/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to delete a Field.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE /api/v1/drafts/&lt;name&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Field name</td>
+</tr>
+</tbody></table>
+
+          <h1 id="entity">Entity</h1>
+
+<h2 id="get-table-constructor">Get table constructor</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entities/table-description/logbook
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0dc26cc0-335c-40a7-ba5b-7f754693736a"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x8b52b173e82b57487c16c701bea5f4fb18088f11de10345e300baa7d55659865"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"archived"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"incident"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"explanation"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an Entity with the entire set of Fields, that are needed to show to Users.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entities/table-description/&lt;name&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Name of the entity</td>
+</tr>
+</tbody></table>
+
+<h2 id="add-entity">Add Entity</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"name": "logbook", "mixins": [], "fields": [{"name": "incident", "type": "text"}]}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entities
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x75d1ca7acd7ef942e062022c944ef99b34ead44fb7e134970b9c292cfc432891"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"archived"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"incident"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"explanation"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint adds an Entity.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/entities</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Name of the entity</td>
+</tr>
+<tr>
+<td>mixins</td>
+<td>String[]</td>
+<td>Array of used mixins</td>
+</tr>
+<tr>
+<td>fields</td>
+<td>String[]</td>
+<td>Array of fields, which entries of this type will have</td>
+</tr>
+</tbody></table>
+
+<h2 id="link-entities-to-each-other">Link Entities to each other</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"local": "3feb4353-393c-4021-afdb-2e1f8ef1aa6b", "localField": "target", "target": "9c8e2eea-4003-4e8e-b47b-7fcfbc1e9fd8", "targetField": "id"}'</span>
+   https://compliance-guard.lan/api/v1/entities/links
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x75d1ca7acd7ef942e062022c944ef99b34ead44fb7e134970b9c292cfc432891"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"local"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"3feb4353-393c-4021-afdb-2e1f8ef1aa6b"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"localField"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"target"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"target"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"9c8e2eea-4003-4e8e-b47b-7fcfbc1e9fd8"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"targetField"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"id"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint links two Entities between to each other.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/entities/links</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>local</td>
+<td>String</td>
+<td>Id of an entity, which must be linked</td>
+</tr>
+<tr>
+<td>localField</td>
+<td>String</td>
+<td>Name of field, which will be contain foreign key value</td>
+</tr>
+<tr>
+<td>target</td>
+<td>String</td>
+<td>Id of an entity, to which &lsquo;local&rsquo; entity is linked</td>
+</tr>
+<tr>
+<td>targetField</td>
+<td>String</td>
+<td>Name of field, which one will be foreign key field</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-entity-by-id">Get Entity by ID</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entities/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x75d1ca7acd7ef942e062022c944ef99b34ead44fb7e134970b9c292cfc432891"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"archived"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"incident"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an Entity when its ID is provided.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entities/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Id of the desired entity</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-entity-by-name">Get Entity by Name</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entities/logbook
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x75d1ca7acd7ef942e062022c944ef99b34ead44fb7e134970b9c292cfc432891"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"archived"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"incident"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an Entity when its given Name is provided.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entities/&lt;name&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Name of the desired entity</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-list-of-entities">Get list of Entities</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entities?name<span class="o">=</span>logbook&amp;limit<span class="o">=</span>5
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entities"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x75d1ca7acd7ef942e062022c944ef99b34ead44fb7e134970b9c292cfc432891"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"archived"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+          </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"incident"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">],</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an array of Entities.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entities</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>[Optional] Name of the desired entity</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched entities. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of entities to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="send-entity-to-archive">Send Entity to archive</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X DELETE <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entities/logbook
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to archive an Entity.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE /api/v1/entities/&lt;name&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Name of the desired entity</td>
+</tr>
+</tbody></table>
+
+          <h1 id="entry">Entry</h1>
+
+<h2 id="add-entry">Add Entry</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"incident": "test", "explanation": "test reason", "chainId": "df81c9fd-7b90-4098-a084-8dff1e0e1e79"}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to adds a specific Entry of data as key value pairs. This is the normal method utilized by an Integrator to push data into ComplianceGuard.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/entries/&lt;entityId&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>entityId</td>
+<td>String</td>
+<td>Id of the corresponding entity</td>
+</tr>
+<tr>
+<td>chainId</td>
+<td>String</td>
+<td>[Optional] Id of the target entry to update. No data actually changed, and chain of changes created instead</td>
+</tr>
+</tbody></table>
+
+<h2 id="add-entry-using-form">Add Entry (Using Form)</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -F <span class="s2">"incident=test"</span> <span class="se">\</span>
+   -F <span class="s2">"explanation=test reason"</span> <span class="se">\</span>
+   -F <span class="s2">"file_1=/path/to/file.txt"</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e/form
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+          </span><span class="s2">"file_1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file.txt"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"application/octet-stream"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">6430</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"lastModifiedDate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T00:00:00+00:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"digest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buffer"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">214</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">87</span><span class="p">,</span><span class="mi">199</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mi">236</span><span class="p">,</span><span class="mi">218</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">189</span><span class="p">,</span><span class="mi">136</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">93</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="mi">144</span><span class="p">]</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buffer"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">57</span><span class="p">,</span><span class="mi">102</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mi">97</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">97</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">54</span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to add a specific Entry of data using the ComplianceGuard User Interface (such as the CCO Logbook). The parameters are the same as those used in the plain Add Entry method, but in this case data is used from a form, rather than plain JSON.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/entries/&lt;entityId&gt;/form</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>entityId</td>
+<td>String</td>
+<td>Id of the corresponding entity</td>
+</tr>
+<tr>
+<td>[Optional]</td>
+<td>String</td>
+<td>chainId Id of the target entry to update. No data actually changed, and chain of changes created instead</td>
+</tr>
+</tbody></table>
+
+<h2 id="add-entry-using-form-where-one-field-can-contain-multiple-files">Add Entry (Using Form, where one Field can contain multiple files)</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -F <span class="s2">"incident=test"</span> <span class="se">\</span>
+   -F <span class="s2">"file_1=/path/to/file.txt"</span> <span class="se">\</span>
+   -F <span class="s2">"file_1=/path/to/another/file.jpg"</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e/formmultiple
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"file_1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file.txt"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"application/octet-stream"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">6430</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"lastModifiedDate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T00:00:00+00:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"digest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buffer"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">214</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">87</span><span class="p">,</span><span class="mi">199</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mi">236</span><span class="p">,</span><span class="mi">218</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">189</span><span class="p">,</span><span class="mi">136</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">93</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="mi">144</span><span class="p">]</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buffer"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">57</span><span class="p">,</span><span class="mi">102</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mi">97</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">97</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">54</span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"file_2"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file.jpg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image/jpeg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">12340</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"lastModifiedDate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-25T00:00:00+00:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"digest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buffer"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">214</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">87</span><span class="p">,</span><span class="mi">199</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mi">236</span><span class="p">,</span><span class="mi">218</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">189</span><span class="p">,</span><span class="mi">136</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">93</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="mi">144</span><span class="p">]</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buffer"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"link"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">57</span><span class="p">,</span><span class="mi">102</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mi">97</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">97</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">54</span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to add a specific Entry where Clients can attach files (such as PDFs or .doc files). In this method one Field can contain multiple files.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/entries/&lt;entityId&gt;/form</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>entityId</td>
+<td>String</td>
+<td>Id of the corresponding entity</td>
+</tr>
+<tr>
+<td>[Optional]</td>
+<td>String</td>
+<td>chainId Id of the target entry to update. No data actually changed, and chain of changes created instead</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-list-of-entries-of-a-specific-type">Get list of Entries of a specific type</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e?limit<span class="o">=</span>5
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an array of specific Entries.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entries/&lt;entityId&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>entityId</td>
+<td>String</td>
+<td>Id of the corresponding entity</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched devices. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of devices to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-history-of-changes-for-a-specific-entry">Get history of changes for a specific Entry</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e/history?limit<span class="o">=</span>5
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test resason"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an array of Entries, each of which describes a single changeset of the original Entry.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entries/&lt;entityId&gt;/history</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>chainId</td>
+<td>String</td>
+<td>Id of the original entry</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched devices. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of devices to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-linked-items-to-the-latest-version-of-a-specific-entry">Get linked items to the latest version of a specific Entry</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e/latest/links
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"243cbe46-2cce-402d-9307-c8c16ed07b26"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xfaf04d916adc4ed24bd5e1a035b2f2369dbf7538498ba9e69fe2499d13422336"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-08-21T07:35:44.937Z"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3feb4353-393c-4021-afdb-2e1f8ef1aa6b"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">],</span><span class="w">
+          </span><span class="s2">"tx"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"blockHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xfab1d2c44eb709c3fd2e145b9485d9633f6ea156d65ec2d814e6ac2ec4140af8"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"blockNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x4db4"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"condition"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"creates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xa4756da0eff5cdd8c558c4aba715ee03f677c9b0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0004a1af9de734f8ddab0d47c803cf301038d874"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"gas"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xe57e0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"gasPrice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xfaf04d916adc4ed24bd5e1a035b2f2369dbf7538498ba9e69fe2499d13422336"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"input"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x3339613838653834313234313939383233737656656636303133646163643235656637386161"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"networkId"</span><span class="p">:</span><span class="w"> </span><span class="mi">8995</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x232236"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"publicKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x16dbef0da60ba94f7583b79d6b9b1d40eca9854529ac2c23cd9b5e0e92be344e38aae5c7"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"r"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x1c471fcdd60ac0c8e0903624aec1481e635069d561004a69faa4234a4150d752"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"raw"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xf891656634300ac0c8e0903624aec1481e635069d5447de7c64a374b23118e5404b69847b47eaa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x7efc4ed33b3f2fb49251e1b14587447de7c64a374b23118e5404b69847b47eaa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"standardV"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"to"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"transactionIndex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x4669"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="w">
+            </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns list of Entries that are associated with the latest version of a specific Entry.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entries/&lt;entityId&gt;/latest/links</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>chainId</td>
+<td>String</td>
+<td>Id of the original entry</td>
+</tr>
+<tr>
+<td>entityId</td>
+<td>String</td>
+<td>Id of the entity, which items you want to see</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched devices. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of devices to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-latest-version-of-the-specific-entry">Get latest version of the specific Entry</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e/latest
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns the latest version of an Entry, showing all the changes made to the original Entry.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entries/&lt;entityId&gt;/latest</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>chainId</td>
+<td>String</td>
+<td>Id of the original entry</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-parameters-necessary-for-validating-stored-data">Get parameters necessary for validating stored data</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e/1cedf4ab-befd-44aa-b31b-86d612f4068e/validate
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="err">data</span><span class="p">:</span><span class="w"> </span><span class="s2">"AhBWsvywZT5F4IPs50j54l1VCOCh57fTKxEAAAAAAADwPxqUAQIETmV3cw"</span><span class="p">,</span><span class="w">
+         </span><span class="err">signature</span><span class="p">:</span><span class="w"> </span><span class="s2">"82e9922a839d666733d93b077b7e67d858122bd7ef21c8ddbb8e26a8"</span><span class="p">,</span><span class="w">
+         </span><span class="err">key</span><span class="p">:</span><span class="w"> </span><span class="s2">"-----BEGIN PUBLIC KEY----- -----END PUBLIC KEY-----"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns the sender’s public key, data signature, and payload so the Client can validate them.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entries/&lt;entityId&gt;/&lt;id&gt;/validate</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>chainId</td>
+<td>String</td>
+<td>Id of the original entry</td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Id of the specific changeset</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-linked-items-to-the-specific-revision-of-an-entry">Get linked items to the specific revision of an Entry</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e/1cedf4ab-befd-44aa-b31b-86d612f4068e/links
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"243cbe46-2cce-402d-9307-c8c16ed07b26"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xfaf04d916adc4ed24bd5e1a035b2f2369dbf7538498ba9e69fe2499d13422336"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-08-21T07:35:44.937Z"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3feb4353-393c-4021-afdb-2e1f8ef1aa6b"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">],</span><span class="w">
+          </span><span class="s2">"tx"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"blockHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xfab1d2c44eb709c3fd2e145b9485d9633f6ea156d65ec2d814e6ac2ec4140af8"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"blockNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x4db4"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"condition"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"creates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xa4756da0eff5cdd8c558c4aba715ee03f677c9b0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0004a1af9de734f8ddab0d47c803cf301038d874"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"gas"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xe57e0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"gasPrice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xfaf04d916adc4ed24bd5e1a035b2f2369dbf7538498ba9e69fe2499d13422336"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"input"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x3339613838653834313234313939383233737656656636303133646163643235656637386161"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"networkId"</span><span class="p">:</span><span class="w"> </span><span class="mi">8995</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x232236"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"publicKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x16dbef0da60ba94f7583b79d6b9b1d40eca9854529ac2c23cd9b5e0e92be344e38aae5c7"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"r"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x1c471fcdd60ac0c8e0903624aec1481e635069d561004a69faa4234a4150d752"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"raw"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xf891656634300ac0c8e0903624aec1481e635069d5447de7c64a374b23118e5404b69847b47eaa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x7efc4ed33b3f2fb49251e1b14587447de7c64a374b23118e5404b69847b47eaa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"standardV"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"to"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"transactionIndex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x4669"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="w">
+            </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns a list of Entries that are associated with a specific Entry in the revision chain.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entries/&lt;entityId&gt;/&lt;id&gt;/links</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>chainId</td>
+<td>String</td>
+<td>Id of the original entry</td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Id of the specific changeset</td>
+</tr>
+<tr>
+<td>entityId</td>
+<td>String</td>
+<td>Id of the entity, which items you want to see</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched devices. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of devices to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-specific-revision-of-the-entry">Get specific revision of the Entry</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   <span class="s2">"https://compliance-guard.lan/api/v1/entries/1cedf4ab-befd-44aa-b31b-86d612f4068e/1cedf4ab-befd-44aa-b31b-86d612f4068e"</span>
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns a specific revision of an Entry in a revision chain.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/entries/&lt;entityId&gt;/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>chainId</td>
+<td>String</td>
+<td>Id of the original entry</td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Id of the specific changeset</td>
+</tr>
+</tbody></table>
+
+          <h1 id="role">Role</h1>
+
+<h2 id="add-role">Add Role</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"name":"Manager Role", "slugname":"manager", "permissions":[]}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/roles
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manager Role"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"slugname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"manager"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint adds a User Role to the system.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/system/roles</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>slugname</td>
+<td>String</td>
+<td>Role name</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Human-readable name</td>
+</tr>
+<tr>
+<td>permissions</td>
+<td>Object[]</td>
+<td>Permissions granted to this role</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-role">Get Role</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/roles/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manager Role"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"slugname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"manager"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to get the basic information about a User Role.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/fields/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Role id</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-list-of-roles">Get list of Roles</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/roles?name<span class="o">=</span>manager&amp;limit<span class="o">=</span>5
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manager Role"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"slugname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"manager"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an array of User Roles.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/roles</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Human-readable name</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of drafts to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="update-role">Update Role</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X PUT <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"name":"Manager Role", "slugname":"manager", "permissions":[]}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/roles/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manager Role"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"slugname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"manager"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to update the name and permissions of a Role.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT /api/v1/system/roles/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Role id</td>
+</tr>
+<tr>
+<td>slugname</td>
+<td>String</td>
+<td>[Optional] Role name</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>[Optional] Human-readable name</td>
+</tr>
+<tr>
+<td>permissions</td>
+<td>Object[]</td>
+<td>[Optional] Permissions granted to this role</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-role">Delete Role</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X DELETE <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/roles/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to delete a Role.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE /api/v1/drafts/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Role id</td>
+</tr>
+</tbody></table>
+
+          <h1 id="snapshot">Snapshot</h1>
+
+<h2 id="get-snapshot">Get Snapshot</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/snapshots/d0691c48-ad21-45db-bbd6-f32aa264d1ad
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+
+<p>Use this method to obtain a full download of the data stored on a Client’s Device or collection of Devices. This data can then be given to an auditor for analysis.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/snapshots/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Id of the desired snapshot</td>
+</tr>
+</tbody></table>
+
+<h2 id="start-building-snapshot">Start Building Snapshot</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"phone": "3752901234567"}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/snapshots
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"snapshot"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to initiate the process of building a Snapshot. This starts the background task of dumping the blockchain and returns an id of this task.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/system/snapshots</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>phone</td>
+<td>String</td>
+<td>Phone number, to which SMS notification will be send, with private key to decrypt snapshot</td>
+</tr>
+</tbody></table>
+
+          <h1 id="user">User</h1>
+
+<h2 id="add-user">Add User</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"username": "first.last", "fullName": "First Last", "email": "first.last__hedgefund.com", "password": "pwd"}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first.last"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"First Last"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first.last__hedgefund.com"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"signingKeyPublic"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-----BEGIN PUBLIC KEY----- -----END PUBLIC KEY-----"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this endpoint method to add a User to the system.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/system/users</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>String</td>
+<td>Name of the new user</td>
+</tr>
+<tr>
+<td>fullName</td>
+<td>String</td>
+<td>Human-readable name of the new user</td>
+</tr>
+<tr>
+<td>email</td>
+<td>String</td>
+<td>Email address of the new user</td>
+</tr>
+<tr>
+<td>password</td>
+<td>String</td>
+<td>Password of the new user</td>
+</tr>
+</tbody></table>
+
+<h2 id="add-users-from-ldap">Add Users from LDAP</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"users": ["user1", "user2", "user3"]}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users/ldap
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"User #1"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1__hedgefund.com"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"signingKeyPublic"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-----BEGIN PUBLIC KEY----- -----END PUBLIC KEY-----"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local"</span><span class="p">,</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to add UI Users by using data from LDAP.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/system/users/ldap</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>users</td>
+<td>String</td>
+<td>Array of users, that need to be added to the system</td>
+</tr>
+</tbody></table>
+
+<h2 id="add-role-to-the-existing-user">Add Role to the existing User</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X POST <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"role": "1cedf4ab-befd-44aa-b31b-86d612f4068e"}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3/roles
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"role"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="w">
+        </span><span class="s2">"slugname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to add a Role to a User.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/system/users/&lt;id&gt;/roles</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the target user</td>
+</tr>
+<tr>
+<td>roleId</td>
+<td>String[]</td>
+<td>Role id</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-list-of-ldap-users">Get list of LDAP Users</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users/ldap
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Use #1"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"alreadyPresence"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user2"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Use #2"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"alreadyPresence"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user3"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Use #3"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"alreadyPresence"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an array of LDAP Users.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/users/ldap</code></p>
+
+<h2 id="generate-new-private-public-keys-pair-for-user">Generate new private/public keys pair for User</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3/generate
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint generates a signingKeyPrivate and signingKeyPublic pair for the target User.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/users/&lt;id&gt;/generate</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the target user</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-list-of-roles-for-the-user">Get list of Roles for the User</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3/roles
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"roles"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"slugname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns the array of Roles that have been assigned to a User.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/users/&lt;id&gt;/roles</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the target user</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-user">Get User</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first.last"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"First Last"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first.last__hedgefund.com"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"signingKeyPublic"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-----BEGIN PUBLIC KEY----- -----END PUBLIC KEY-----"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns User data, excluding private information.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/users/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the target user</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-list-of-users">Get list of Users</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X GET <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users&amp;limit<span class="o">=</span>1
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first.last"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"First Last"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first.last__hedgefund.com"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"signingKeyPublic"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-----BEGIN PUBLIC KEY----- -----END PUBLIC KEY-----"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>This endpoint returns an array of Users that have been created within a particular Client’s system (or imported from LDAP).</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/system/users</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>limit</td>
+<td>String</td>
+<td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>String</td>
+<td>[Optional] Number of drafts to skip. Default value: 5</td>
+</tr>
+</tbody></table>
+
+<h2 id="update-user">Update User</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X PUT <span class="se">\</span>
+   -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+   -d <span class="s1">'{"fullName": "New First Last", "password": "pwd"}'</span> <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6a2017db-6f7c-45e8-ab28-ebe9e589b4b3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first.last"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New First Last"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first.last__hedgefund.com"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"signingKeyPublic"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-----BEGIN PUBLIC KEY----- -----END PUBLIC KEY-----"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to updated User data.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT /api/v1/system/users/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the desired user</td>
+</tr>
+<tr>
+<td>username</td>
+<td>String</td>
+<td>[Optional] Name of the user</td>
+</tr>
+<tr>
+<td>fullName</td>
+<td>String</td>
+<td>[Optional] Human-readable name of the user</td>
+</tr>
+<tr>
+<td>email</td>
+<td>String</td>
+<td>[Optional] Email address of the user</td>
+</tr>
+<tr>
+<td>password</td>
+<td>String</td>
+<td>[Optional] Password of the user</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-role-from-users-list">Delete Role from User&rsquo;s list</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X DELETE <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3/roles/1cedf4ab-befd-44aa-b31b-86d612f4068e
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to delete a Role from a User&rsquo;s list.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE /api/v1/system/users/&lt;id&gt;/roles/&lt;roleId&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the user</td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the desired role</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-user">Delete User</h2>
+<pre class="highlight shell tab-shell"><code>
+ curl <span class="se">\</span>
+   -X DELETE <span class="se">\</span>
+   https://compliance-guard.lan/api/v1/system/users/6a2017db-6f7c-45e8-ab28-ebe9e589b4b3
+
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Use this method to delete a User.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE /api/v1/system/users/&lt;id&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>ID of the user</td>
+</tr>
+</tbody></table>
+
           <h1 id="errors">Errors</h1>
 
 <aside class="notice"> If you require any assistance, please write to us at <a href="https://www.cgblockchain.com/contact">CG contact page</a>. Providing the request identifier would help to ensure a quicker resolution.</aside>
