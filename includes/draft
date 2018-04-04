@@ -37,28 +37,24 @@
 
 <p><code class="prettyprint">POST /api/v1/drafts</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Name of the draft</td>
 </tr>
 <tr>
-<td>mixins</td>
-<td>String[]</td>
+<td>MIXINS</td>
 <td>Array of used mixins</td>
 </tr>
 <tr>
-<td>fields</td>
-<td>String[]</td>
+<td>FIELDS</td>
 <td>Array of fields, which entries of this type will have</td>
 </tr>
 </tbody></table>
@@ -103,13 +99,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the desired draft</td>
 </tr>
 </tbody></table>
@@ -156,23 +150,19 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] Name of the desired draft</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of drafts to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -214,33 +204,28 @@
 
 <p><code class="prettyprint">PUT /api/v1/drafts/&lt;id&gt;</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the desired draft</td>
 </tr>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] New name of the draft</td>
 </tr>
 <tr>
-<td>mixins</td>
-<td>String[]</td>
+<td>MIXINS</td>
 <td>[Optional] New array of used mixins</td>
 </tr>
 <tr>
-<td>fields</td>
-<td>String[]</td>
+<td>FIELDS</td>
 <td>[Optional] New array of fields, which entries of this type will have</td>
 </tr>
 </tbody></table>
@@ -273,13 +258,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>ID</td>
-<td>String</td>
-<td>of the desired draft</td>
+<td>ID of the desired draft</td>
 </tr>
 </tbody></table>

@@ -34,33 +34,28 @@
 
 <p><code class="prettyprint">POST /api/v1/system/users</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>username</td>
-<td>String</td>
+<td>USERNAME</td>
 <td>Name of the new user</td>
 </tr>
 <tr>
-<td>fullName</td>
-<td>String</td>
+<td>FULLNAME</td>
 <td>Human-readable name of the new user</td>
 </tr>
 <tr>
-<td>email</td>
-<td>String</td>
+<td>EMAIL</td>
 <td>Email address of the new user</td>
 </tr>
 <tr>
-<td>password</td>
-<td>String</td>
+<td>PASSWORD</td>
 <td>Password of the new user</td>
 </tr>
 </tbody></table>
@@ -101,18 +96,16 @@
 
 <p><code class="prettyprint">POST /api/v1/system/users/ldap</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>users</td>
-<td>String</td>
+<td>USERS</td>
 <td>Array of users, that need to be added to the system</td>
 </tr>
 </tbody></table>
@@ -149,24 +142,21 @@
 
 <p><code class="prettyprint">POST /api/v1/system/users/&lt;id&gt;/roles</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the target user</td>
 </tr>
 <tr>
-<td>roleId</td>
+<td>ROLEID</td>
 <td>String[]</td>
-<td>Role id</td>
 </tr>
 </tbody></table>
 
@@ -239,13 +229,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the target user</td>
 </tr>
 </tbody></table>
@@ -287,13 +275,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the target user</td>
 </tr>
 </tbody></table>
@@ -335,13 +321,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the target user</td>
 </tr>
 </tbody></table>
@@ -385,18 +369,15 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of drafts to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -440,33 +421,27 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the desired user</td>
 </tr>
 <tr>
-<td>username</td>
-<td>String</td>
+<td>USERNAME</td>
 <td>[Optional] Name of the user</td>
 </tr>
 <tr>
-<td>fullName</td>
-<td>String</td>
+<td>FULLNAME</td>
 <td>[Optional] Human-readable name of the user</td>
 </tr>
 <tr>
-<td>email</td>
-<td>String</td>
+<td>EMAIL</td>
 <td>[Optional] Email address of the user</td>
 </tr>
 <tr>
-<td>password</td>
-<td>String</td>
+<td>PASSWORD</td>
 <td>[Optional] Password of the user</td>
 </tr>
 </tbody></table>
@@ -499,18 +474,15 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the user</td>
 </tr>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ROLEID</td>
 <td>ID of the desired role</td>
 </tr>
 </tbody></table>
@@ -543,13 +515,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the user</td>
 </tr>
 </tbody></table>

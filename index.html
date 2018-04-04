@@ -246,18 +246,18 @@ To get started, you will first need to change the base url {base_url} on our web
 
 <h1 id="terminology">Terminology</h1>
 
-<p>Some clarity about our use of terms may be helpful to familiarize the newcomer with how our API works. Devices refer to ComplianceGuard hardware units. Each Client may have numerous Devices. Entities are categories of data that ComplianceGuard records and stores (such as business conduct rules, execution mandates, compliance alerts, etc.). Entities are constructed through the intermediate state of Drafts, which automatically become Entities when they have been finalized. Each particular Entity is made up of a set of Fields. Entries are Fields where the Client will push data into ComplianceGuard (such as particular instances of compliance alerts or transactions).</p>
+<p>Some clarity about our use of terms may be helpful to familiarize the new user with how our API works. Devices refer to ComplianceGuard hardware units. Each Client may have numerous Devices. Entities are categories of data that ComplianceGuard records and stores (such as business conduct rules, execution mandates, compliance alerts, etc.). Entities are constructed through the intermediate state of Drafts, which automatically become Entities when they have been finalized. Each particular Entity is made up of a set of Fields. Entries are Fields where the Client will enter into ComplianceGuard (such as particular instances of compliance alerts or transactions).</p>
 
 <h1 id="authentication">Authentication</h1>
 
-<p>ComplianceGuard is flexible on authentication, it highly depends on each client&rsquo;s requirements. Current version supports following basic authentication mechanisms:</p>
+<p>ComplianceGuard is flexible on authentication, which is highly dependent on each client’s respective requirements. The current version supports the following basic authentication mechanisms:</p>
 
 <ul>
-<li><p>providing authentication token by HTTP header Authorization;</p></li>
-<li><p>signing all HTTP requests by client&rsquo;s certificate.</p></li>
+<li><p>Providing authentication token by HTTP header Authorization;</p></li>
+<li><p>Signing all HTTP requests by client&rsquo;s certificate.</p></li>
 </ul>
 
-<p>In general, agreement on authentication schema is topic for close conversation with Integrators.</p>
+<p>As a general guideline, agreement on the authentication schema should be a topic for discussion with Integrators.</p>
 
 <h1 id="order">Order</h1>
 
@@ -306,7 +306,11 @@ This is a common subject across all Portware events.</p>
 </tr>
 <tr>
 <td>PRICE_TYPE_QUALIFIER</td>
-<td>Held, Not Held TIF GTC, Day, GTD</td>
+<td>Held, Not Held</td>
+</tr>
+<tr>
+<td>TIF</td>
+<td>GTC, Day, GTD</td>
 </tr>
 <tr>
 <td>EXPIRY</td>
@@ -330,11 +334,7 @@ This is a common subject across all Portware events.</p>
 </tr>
 <tr>
 <td>STOP_PRICE</td>
-<td>Stop price if the</td>
-</tr>
-<tr>
-<td>ORDER_TYPE</td>
-<td>It is stop limit.</td>
+<td>Stop price if the if the ORDER_TYPE is stop limit.</td>
 </tr>
 <tr>
 <td>PAR_VALUE</td>
@@ -458,77 +458,102 @@ The description for each attribute under the &lsquo;SECURITY&rsquo; data subject
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>ORDER_STATUS<span class="s2">" : {
-          "</span>NEW_ORDER<span class="s2">": "",
-          "</span>ORDER_AMEND<span class="s2">": "",
-          "</span>ORDER_CANCEL<span class="s2">": "",
-          "</span>ORDER_COMPLETE<span class="s2">": "",
-          "</span>SENT_TO_TRADE<span class="s2">": "",
-          "</span>PARENT_ORDER_CREATION<span class="s2">": "",
-          "</span>ARCHIVE<span class="s2">": "",
-          "</span>ORDER_STATUS_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "order_status" : { \
+          "new_order": "accepted", \
+          "order_amend": false, \
+          "order_cancel": false, \
+          "order_complete": true, \
+          "sent_to_trade": true, \
+          "parent_order_creation": false, \
+          "archive": false, \
+          "order_status_id": "d0691c48" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
 <blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order_status"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<blockquote>
 <p>Change {base_url} with main domain and {url} with corresponding endpoint url</p>
 </blockquote>
+
+<h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">POST api/v1/order/</code></p>
 
 <p>The <code class="prettyprint">&#39;ORDER_STATUS&#39;</code> data subject provides the state of the order within the lifecycle; both current and previous.</p>
 
-<p>The description for each attribute under the &lsquo;ORDER_STATUS&rsquo; data subject are as follows:</p>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Attribute</th>
+<th>Attributes</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
@@ -573,70 +598,97 @@ curl -X POST <span class="se">\</span>
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>COMPLIANCE<span class="s2">" : {
-          "</span>COMPLIANCE_RUN<span class="s2">": "",
-          "</span>COMPLIANCE_TYPE<span class="s2">": "",
-          "</span>COMPLIANCE_RULE<span class="s2">": "",
-          "</span>COMPLIANCE_STATUS<span class="s2">": "",
-          "</span>COMPLIANCE_RESULT_TEXT<span class="s2">": "",
-          "</span>COMPLIANCE_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "compliance" : { \
+          "compliance_run": "100", \
+          "compliance_type": "in-trade", \
+          "compliance_rule": "compliance rule", \
+          "compliance_status": "Pass", \
+          "compliance_result_text": "validated", \
+          "compliance_id": "f32aa264d1ad" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
 <blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"compliance"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<blockquote>
 <p>Change {base_url} with main domain and {url} with corresponding endpoint url</p>
 </blockquote>
+
+<h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">POST api/v1/compliance/</code></p>
 
 <p>The <code class="prettyprint">&#39;COMPLIANCE&#39;</code> data subject provides a repeating status of compliance checks performed during the order lifecycle.
-For every rule applied, a type; rule description; status; and plain English result text will be provided.</p>
+For every rule applied, a type, rule description, status and plain English result text will be provided.</p>
+
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
@@ -663,67 +715,92 @@ For every rule applied, a type; rule description; status; and plain English resu
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>ORDER_STATUS<span class="s2">" : {
-          "</span>NEW_ORDER<span class="s2">": "",
-          "</span>ORDER_AMEND<span class="s2">": "",
-          "</span>ORDER_CANCEL<span class="s2">": "",
-          "</span>ORDER_COMPLETE<span class="s2">": "",
-          "</span>SENT_TO_TRADE<span class="s2">": "",
-          "</span>PARENT_ORDER_CREATION<span class="s2">": "",
-          "</span>ARCHIVE<span class="s2">": "",
-          "</span>ORDER_STATUS_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "order_status" : { \
+          "new_order": "accepted", \
+          "order_amend": false, \
+          "order_cancel": false, \
+          "order_complete": true, \
+          "sent_to_trade": true, \
+          "parent_order_creation": false, \
+          "archive": false, \
+          "order_status_id": "d0691c48" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
 <blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order_status"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<blockquote>
 <p>Change {base_url} with main domain and {url} with corresponding endpoint url</p>
 </blockquote>
+
+<h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">POST api/v1/order/{order_id}/sent_to_trade</code></p>
 
@@ -738,67 +815,92 @@ curl -X POST <span class="se">\</span>
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>ORDER_STATUS<span class="s2">" : {
-          "</span>NEW_ORDER<span class="s2">": "",
-          "</span>ORDER_AMEND<span class="s2">": "",
-          "</span>ORDER_CANCEL<span class="s2">": "",
-          "</span>ORDER_COMPLETE<span class="s2">": "",
-          "</span>SENT_TO_TRADE<span class="s2">": "",
-          "</span>PARENT_ORDER_CREATION<span class="s2">": "",
-          "</span>ARCHIVE<span class="s2">": "",
-          "</span>ORDER_STATUS_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "order_status" : { \
+          "new_order": "accepted", \
+          "order_amend": false, \
+          "order_cancel": false, \
+          "order_complete": true, \
+          "sent_to_trade": true, \
+          "parent_order_creation": false, \
+          "archive": false, \
+          "order_status_id": "d0691c48" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
 <blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order_status"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<blockquote>
 <p>Change {base_url} with main domain and {url} with corresponding endpoint url</p>
 </blockquote>
+
+<h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">POST api/v1/order/{order_id}/parent_creation</code></p>
 
@@ -813,57 +915,82 @@ curl -X POST <span class="se">\</span>
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
         }
-    }"</span> <span class="se">\</span>
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
 <blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<blockquote>
 <p>Change {base_url} with main domain and {url} with corresponding endpoint url</p>
 </blockquote>
+
+<h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">POST api/v1/order/{order_id}/assign</code></p>
 
@@ -883,84 +1010,111 @@ This is a common subject across all Portware events.</p>
 <h2 id="merge">Merge</h2>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>MERGE<span class="s2">" : {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-          "</span>ALLOCATION_QUANTITY<span class="s2">": "",
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>MERGE_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "merge" : { \
+          "program_id": "", \
+          "parent_id": "", \
+          "quantity": "", \
+          "side": "", \
+          "price": "", \
+          "allocation_account": "", \
+          "allocation_quantity": "", \
+          "price_type_qualifier": "", \
+          "tif": "", \
+          "expiry": "", \
+          "settlement_date": "", \
+          "ccy_pair": "", \
+          "fixing_date": "", \
+          "order_type": "", \
+          "stop_price": "", \
+          "par_value": "", \
+          "maturity_date": "", \
+          "strike_price": "", \
+          "executed_volume": "", \
+          "committed_volume": "", \
+          "owner": "", \
+          "merge_id": "" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"merge"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
 <p><code class="prettyprint">POST api/v1/merge/{order_id}</code></p>
 
 <p>The <code class="prettyprint">&#39;MERGE&#39;</code> data subject is generated when two orders are joined in Portware. When this happens, the order details of
 the merged order will be included within this block. It will repeat every merge that takes place in Portware.</p>
 
 <p>Scope: A block will repeat to include each block that is merged with the order.</p>
+
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <p>The description for each attribute under the ‘MERGE’ data subject are as follows:</p>
 
@@ -1063,63 +1217,90 @@ the merged order will be included within this block. It will repeat every merge 
 <h2 id="split"> Split</h2>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>SPLIT<span class="s2">" : {
-          "</span>SPLIT_QUANTITY<span class="s2">": "",
-          "</span>SPLIT_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "split" : { \
+          "split_quantity": "", \
+          "split_id": "" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"split"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
 <p><code class="prettyprint">POST api/v1/split/{order_id}</code></p>
 
 <p>The <code class="prettyprint">&#39;SPLIT&#39;</code> data subject will detail quantity that is split off from the order. It will repeat for each split executed against theorder during the lifecycle.</p>
 
 <p>Scope: A block will repeat to include each quantity split from the order.</p>
+
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
@@ -1140,64 +1321,92 @@ curl -X POST <span class="se">\</span>
 <h1 id="sweep">Sweep</h1>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>SWEEP<span class="s2">" : {
-          "</span>SWEEP_DESITNATION<span class="s2">": "",
-          "</span>SWEEP_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "sweep" : { \
+          "open_quantity": "4002"
+          "sweep_desitnation": "1cedf4ab", \
+          "sweep_id": "86d612f4068e" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sweep"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
 <p><code class="prettyprint">POST api/v1/sweep/{order_id}</code></p>
 
 <p>The <code class="prettyprint">&#39;SWEEP&#39;</code> data subject details advertisements sent to dark pools associated with the order. This will repeat for each
 sweep performed on an order.</p>
 
 <p>Scope: A block will be included for both CURRENT &amp; PREVIOUS state, and it will repeat for each Sweep.</p>
+
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
@@ -1228,66 +1437,91 @@ well as the current and previous states.</p>
 <h2 id="new-placement">New Placement</h2>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>PLACEMENT<span class="s2">" : {
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>BROKER<span class="s2">": "",
-          "</span>ORDER_PARAMETERS<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>COMPLETED_QUANTITY<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>PLACEMENT_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "placement" : { \
+          "quantity": "550", \
+          "broker": "45db", \
+          "order_parameters": "name=name;type=order-type", \
+          "order_type": "Market", \
+          "price": "100", \
+          "stop_price": "0.0", \
+          "completed_quantity": "550", \
+          "tif": "GTC", \
+          "expiry": "3 days", \
+          "placement_id": "45db-bbd6" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"placement"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
 <p><code class="prettyprint">POST api/v1/placements/</code></p>
 
 <p>New Placement is an event that represents a milestone for the lifecycle of an order.
@@ -1305,77 +1539,104 @@ be provided.</p>
 <h2 id="execution">Execution</h2>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>EXECUTION<span class="s2">" : {
-          "</span>EXECUTION_AMOUNT<span class="s2">": "",
-          "</span>EXECUTION_TYPE<span class="s2">": "",
-          "</span>EXECUTION_SOURCE<span class="s2">": "",
-          "</span>EXECUTION_PRICE<span class="s2">": "",
-          "</span>FX_SPOT_RATE<span class="s2">": "",
-          "</span>FX_FORWARD_POINTS<span class="s2">": "",
-          "</span>EXECUTION_ID<span class="s2">": ""
+        }, \
+        "execution" : { \
+          "execution_amount": "", \
+          "execution_type": "", \
+          "execution_source": "", \
+          "execution_price": "", \
+          "fx_spot_rate": "", \
+          "fx_forward_points": "", \
+          "execution_id": "" \
 
-        },
-        "</span>PLACEMENT<span class="s2">" : {
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>BROKER<span class="s2">": "",
-          "</span>ORDER_PARAMETERS<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>COMPLETED_QUANTITY<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>PLACEMENT_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "placement" : { \
+          "quantity": "550", \
+          "broker": "45db", \
+          "order_parameters": "name=name;type=order-type", \
+          "order_type": "Market", \
+          "price": "100", \
+          "stop_price": "0.0", \
+          "completed_quantity": "550", \
+          "tif": "GTC", \
+          "expiry": "3 days", \
+          "placement_id": "45db-bbd6" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"placement"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
 <p><code class="prettyprint">POST api/v1/executions/</code></p>
+
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
@@ -1411,65 +1672,90 @@ repeat for each execution.</p>
 <h1 id="post-trade-allocation">Post Trade Allocation</h1>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>PT_ALLOCATION<span class="s2">" : {
-          "</span>ALLOCATION_QUANTITY<span class="s2">": "",
-          "</span>ALLOCATION_PRICE<span class="s2">": "",
-          "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-          "</span>ALLOCATION_DESTINATION<span class="s2">": "",
-          "</span>ALLOCATION_METHOD<span class="s2">": "",
-          "</span>FEE_TYPE<span class="s2">": "",
-          "</span>FEE_AMOUNT<span class="s2">": "",
-          "</span>CLEARING_BROKER<span class="s2">": "",
-          "</span>PT_ALLOCATION_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "pt_allocation" : { \
+          "allocation_quantity": "", \
+          "allocation_price": "", \
+          "allocation_account": "", \
+          "allocation_destination": "", \
+          "allocation_method": "", \
+          "fee_type": "", \
+          "fee_amount": "", \
+          "clearing_broker": "", \
+          "pt_allocation_id": "" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"post_trade"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
 <p><code class="prettyprint">POST api/v1/post_trade_allocation</code></p>
 
 <p>The <code class="prettyprint">&#39;PT_ALLOCATION&#39;</code> data subject provides detail for any post-trade allocation performed on an order. It will detail the
@@ -1477,6 +1763,8 @@ account, quantity, price, and associated fees. This will repeat for each allocat
 Both the current and previous state will be provided.</p>
 
 <p>&lsquo;Scope&rsquo; A block will be included for both CURRENT &amp; PREVIOUS state, and it will repeat for each allocation.</p>
+
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <p>The attributes for PT Allocation include the following:</p>
 
@@ -1523,59 +1811,84 @@ Both the current and previous state will be provided.</p>
 <h1 id="exception">Exception</h1>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
-        },
-        "</span>ALERT<span class="s2">" : {
-          "</span>ALERT_TYPE<span class="s2">": "",
-          "</span>ALERT_REASON_TEXT<span class="s2">": "",
-          "</span>ALERT_ID<span class="s2">": ""
-        }
-    }"</span> <span class="se">\</span>
+        }, \
+        "alert" : { \
+          "alert_type": "", \
+          "alert_reason_text": "", \
+          "alert_id": "" \
+        } \
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"alert"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
 <p><code class="prettyprint">POST api/v1/exceptions</code></p>
 
 <p>“Exception” is an event that represents a milestone for the lifecycle of an order. This refers to 4 data subjects: ORDER_ATTRIBUTE, SECURITY, SENDER, ALERT.</p>
@@ -1584,6 +1897,8 @@ curl -X POST <span class="se">\</span>
 will be repeated for each exception raised during the order lifecycle.</p>
 
 <p><code class="prettyprint">Scope</code> A block will be included for both CURRENT &amp; PREVIOUS state, and it will repeat for each alert.</p>
+
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <p>The  &lsquo;ALERT&rsquo; data subject includes the following attributes:</p>
 
@@ -1610,54 +1925,79 @@ will be repeated for each exception raised during the order lifecycle.</p>
 <h1 id="archive">archive</h1>
 <pre class="highlight shell tab-shell"><code><span class="c"># With curl, you can just pass the correct header with each request</span>
 curl -X POST <span class="se">\</span>
-  -d <span class="s2">"{
-        "</span>ORDER_ATTRIBUTES<span class="s2">": {
-          "</span>PROGRAM_ID<span class="s2">": "",
-          "</span>PARENT_ID<span class="s2">": "",
-          "</span>QUANTITY<span class="s2">": "",
-          "</span>SIDE<span class="s2">": "",
-          "</span>PRICE<span class="s2">": "",
-          "</span>ALLOCATIONS<span class="s2">": [
-            {
-              "</span>ALLOCATION_ACCOUNT<span class="s2">": "",
-              "</span>ALLOCATION_QUANTITY<span class="s2">": ""
-            }
-          ],
-          "</span>PRICE_TYPE_QUALIFIER<span class="s2">": "",
-          "</span>TIF<span class="s2">": "",
-          "</span>EXPIRY<span class="s2">": "",
-          "</span>SETTLEMENT_DATE<span class="s2">": "",
-          "</span>CCY_PAIR<span class="s2">": "",
-          "</span>FIXING_DATE<span class="s2">": "",
-          "</span>ORDER_TYPE<span class="s2">": "",
-          "</span>STOP_PRICE<span class="s2">": "",
-          "</span>PAR_VALUE<span class="s2">": "",
-          "</span>MATURITY_DATE<span class="s2">": "",
-          "</span>STRIKE_PRICE<span class="s2">": "",
-          "</span>EXECUTED_VOLUME<span class="s2">": "",
-          "</span>COMMITTED_VOLUME<span class="s2">": "",
-          "</span>OWNER<span class="s2">": "",
-          "</span>ORDER_ATTRIBUTE_ID<span class="s2">": ""
-        },
-        "</span>SECURITY<span class="s2">": {
-          "</span>METADATA_STRING<span class="s2">": "",
-          "</span>SEDOL<span class="s2">": "",
-          "</span>OCC_Symbol<span class="s2">": "",
-          "</span>TICKER<span class="s2">": "",
-          "</span>Instrument_Symbol<span class="s2">": "",
-          "</span>SECURITY_ID<span class="s2">": ""
-        },
-        "</span>SENDER<span class="s2">": {
-          "</span>FIRM_ID<span class="s2">": "",
-          "</span>USER<span class="s2">": "",
-          "</span>TIMESTAMP<span class="s2">": "",
-          "</span>SENDER_ID<span class="s2">": ""
+  -d <span class="s1">'{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \
 
         }
-    }"</span> <span class="se">\</span>
+    }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
 
 </code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"entry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d0691c48-ad21-45db-bbd6-f32aa264d1ad"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_ts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-24T11:53:20.108Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"revision"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"chainId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"entityId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1cedf4ab-befd-44aa-b31b-86d612f4068e"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"incident"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"explanation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test reason"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
 <p><code class="prettyprint">POST api/v1/executions/archive</code></p>
 
 <p>Archive is an event that refers to the following 3 data subjects: ORDER_ATTRIBUTE, SECURITY, SENDER.</p>
@@ -1673,8 +2013,12 @@ This is a common subject across all Portware events.</p>
 
           <h1 id="devices">Devices</h1>
 
-<h2 id="add-new-device">Add new Device</h2>
-<pre class="highlight shell tab-shell"><code>
+<h2 id="add-new-device">Add New Device</h2>
+
+<blockquote>
+<p>To create new Order, use this code:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code> <span class="c"># With curl, you can just pass the correct header with each request</span>
  curl <span class="se">\</span>
    -X POST <span class="se">\</span>
    -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
@@ -1698,29 +2042,26 @@ This is a common subject across all Portware events.</p>
   </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
-<p>Used to establish a new ComplianceGuard hardware unit. This endpoint stores the new Device’s info to the ComplianceGuard database for authorization. Normally the Integrator who is connecting an EMS or OMS to ComplianceGuard does this.</p>
+<p>This can be used to establish a new ComplianceGuard hardware unit. This endpoint stores the new Device’s info to the ComplianceGuard database for authorization. Usually the Integrator who connects the EMS or OMS to ComplianceGuard is resposible for this.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">POST /api/v1/system/devices</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Human-readable name of device</td>
 </tr>
 <tr>
-<td>hash</td>
-<td>String</td>
+<td>HASH</td>
 <td>Blockchain hash of an account, associated with this device</td>
 </tr>
 </tbody></table>
@@ -1759,13 +2100,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>Id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the desired device</td>
 </tr>
 </tbody></table>
@@ -1806,28 +2145,23 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] Human-readable name of device</td>
 </tr>
 <tr>
-<td>hash</td>
-<td>String</td>
+<td>HASH</td>
 <td>[Optional] Blockchain hash of an account, associated with this device</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -1865,19 +2199,9 @@ This is a common subject across all Portware events.</p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>String</td>
-<td>of the desired device</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&ndash;|
+| ID     | of the desired device      |</p>
 
 <h2 id="delete-device">Delete Device</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -1904,19 +2228,9 @@ This is a common subject across all Portware events.</p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>String</td>
-<td>of the desired device</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;-|
+| ID     | of the desired device      |</p>
 
           <h1 id="draft">Draft</h1>
 
@@ -1957,28 +2271,24 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/drafts</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Name of the draft</td>
 </tr>
 <tr>
-<td>mixins</td>
-<td>String[]</td>
+<td>MIXINS</td>
 <td>Array of used mixins</td>
 </tr>
 <tr>
-<td>fields</td>
-<td>String[]</td>
+<td>FIELDS</td>
 <td>Array of fields, which entries of this type will have</td>
 </tr>
 </tbody></table>
@@ -2023,13 +2333,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the desired draft</td>
 </tr>
 </tbody></table>
@@ -2076,23 +2384,19 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] Name of the desired draft</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of drafts to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -2134,33 +2438,28 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">PUT /api/v1/drafts/&lt;id&gt;</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the desired draft</td>
 </tr>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] New name of the draft</td>
 </tr>
 <tr>
-<td>mixins</td>
-<td>String[]</td>
+<td>MIXINS</td>
 <td>[Optional] New array of used mixins</td>
 </tr>
 <tr>
-<td>fields</td>
-<td>String[]</td>
+<td>FIELDS</td>
 <td>[Optional] New array of fields, which entries of this type will have</td>
 </tr>
 </tbody></table>
@@ -2193,14 +2492,12 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>ID</td>
-<td>String</td>
-<td>of the desired draft</td>
+<td>ID of the desired draft</td>
 </tr>
 </tbody></table>
 
@@ -2252,38 +2549,32 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/fields</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Field name</td>
 </tr>
 <tr>
-<td>type</td>
-<td>String</td>
+<td>TYPE</td>
 <td>Base types associated to this field</td>
 </tr>
 <tr>
-<td>encodings</td>
-<td>String[]</td>
+<td>ENCODINGS</td>
 <td>Available encodings</td>
 </tr>
 <tr>
-<td>transformers</td>
-<td>String[]</td>
+<td>TRANSFORMERS</td>
 <td>Available transformers</td>
 </tr>
 <tr>
-<td>validators</td>
-<td>String[]</td>
+<td>VALIDATORS</td>
 <td>Available validators</td>
 </tr>
 </tbody></table>
@@ -2337,13 +2628,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Field name</td>
 </tr>
 </tbody></table>
@@ -2399,18 +2688,15 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of drafts to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -2466,33 +2752,27 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Field name</td>
 </tr>
 <tr>
-<td>type</td>
-<td>String</td>
+<td>TYPE</td>
 <td>[Optional] Base types associated to this field</td>
 </tr>
 <tr>
-<td>encodings</td>
-<td>String[]</td>
+<td>ENCODINGS</td>
 <td>[Optional] Available encodings</td>
 </tr>
 <tr>
-<td>transformers</td>
-<td>String[]</td>
+<td>TRANSFORMERS</td>
 <td>[Optional] Available transformers</td>
 </tr>
 <tr>
-<td>validators</td>
-<td>String[]</td>
+<td>VALIDATORS</td>
 <td>[Optional] Available validators</td>
 </tr>
 </tbody></table>
@@ -2525,13 +2805,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Field name</td>
 </tr>
 </tbody></table>
@@ -2542,7 +2820,7 @@ This is a common subject across all Portware events.</p>
 <pre class="highlight shell tab-shell"><code>
  curl <span class="se">\</span>
    -X GET <span class="se">\</span>
-   https://compliance-guard.lan/api/v1/entities/table-description/logbook
+   https://compliance-guard.lan/api/v1/entities/table-description/&lt;NAME&gt;
 
 </code></pre>
 <blockquote>
@@ -2555,7 +2833,7 @@ This is a common subject across all Portware events.</p>
       </span><span class="s2">"entity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0dc26cc0-335c-40a7-ba5b-7f754693736a"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x8b52b173e82b57487c16c701bea5f4fb18088f11de10345e300baa7d55659865"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;name&gt;</span><span class="p">,</span><span class="w">
         </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
         </span><span class="s2">"archived"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
         </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">],</span><span class="w">
@@ -2584,14 +2862,12 @@ This is a common subject across all Portware events.</p>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Name of the entity</td>
 </tr>
 </tbody></table>
@@ -2640,31 +2916,13 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/entities</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>name</td>
-<td>String</td>
-<td>Name of the entity</td>
-</tr>
-<tr>
-<td>mixins</td>
-<td>String[]</td>
-<td>Array of used mixins</td>
-</tr>
-<tr>
-<td>fields</td>
-<td>String[]</td>
-<td>Array of fields, which entries of this type will have</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| NAME    | Name of the entity      |
+| MIXINS     | String[] | Array of used mixins      |
+| FIELDS     | String[] | Array of fields, which entries of this type will have      |</p>
 
 <h2 id="link-entities-to-each-other">Link Entities to each other</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -2702,34 +2960,12 @@ This is a common subject across all Portware events.</p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>local</td>
-<td>String</td>
-<td>Id of an entity, which must be linked</td>
-</tr>
-<tr>
-<td>localField</td>
-<td>String</td>
-<td>Name of field, which will be contain foreign key value</td>
-</tr>
-<tr>
-<td>target</td>
-<td>String</td>
-<td>Id of an entity, to which &lsquo;local&rsquo; entity is linked</td>
-</tr>
-<tr>
-<td>targetField</td>
-<td>String</td>
-<td>Name of field, which one will be foreign key field</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| local    | Id of an entity, which must be linked      |
+| localField    | Name of field, which will be contain foreign key value      |
+| target    | Id of an entity, to which &lsquo;local&rsquo; entity is linked      |
+| targetField    | Name of field, which one will be foreign key field      |</p>
 
 <h2 id="get-entity-by-id">Get Entity by ID</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -2771,19 +3007,9 @@ This is a common subject across all Portware events.</p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Id of the desired entity</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| id    | Id of the desired entity      |</p>
 
 <h2 id="get-entity-by-name">Get Entity by Name</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -2825,19 +3051,9 @@ This is a common subject across all Portware events.</p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>name</td>
-<td>String</td>
-<td>Name of the desired entity</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| NAME    | Name of the desired entity      |</p>
 
 <h2 id="get-list-of-entities">Get list of Entities</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -2884,23 +3100,19 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] Name of the desired entity</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched entities. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of entities to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -2930,19 +3142,9 @@ This is a common subject across all Portware events.</p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>name</td>
-<td>String</td>
-<td>Name of the desired entity</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| NAME    | Name of the desired entity      |</p>
 
           <h1 id="entry">Entry</h1>
 
@@ -2984,23 +3186,20 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/entries/&lt;entityId&gt;</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the corresponding entity</td>
 </tr>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>[Optional] Id of the target entry to update. No data actually changed, and chain of changes created instead</td>
 </tr>
 </tbody></table>
@@ -3058,23 +3257,20 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/entries/&lt;entityId&gt;/form</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the corresponding entity</td>
 </tr>
 <tr>
-<td>[Optional]</td>
-<td>String</td>
+<td>[OPTIONAL]</td>
 <td>chainId Id of the target entry to update. No data actually changed, and chain of changes created instead</td>
 </tr>
 </tbody></table>
@@ -3145,23 +3341,20 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/entries/&lt;entityId&gt;/form</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the corresponding entity</td>
 </tr>
 <tr>
-<td>[Optional]</td>
-<td>String</td>
+<td>[OPTIONAL]</td>
 <td>chainId Id of the target entry to update. No data actually changed, and chain of changes created instead</td>
 </tr>
 </tbody></table>
@@ -3209,23 +3402,19 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the corresponding entity</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -3273,23 +3462,19 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -3361,28 +3546,23 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the entity, which items you want to see</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -3428,13 +3608,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 </tbody></table>
@@ -3473,18 +3651,15 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the specific changeset</td>
 </tr>
 </tbody></table>
@@ -3556,33 +3731,27 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the specific changeset</td>
 </tr>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the entity, which items you want to see</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -3628,18 +3797,15 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the specific changeset</td>
 </tr>
 </tbody></table>
@@ -3678,29 +3844,25 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/system/roles</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>slugname</td>
-<td>String</td>
+<td>SLUGNAME</td>
 <td>Role name</td>
 </tr>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Human-readable name</td>
 </tr>
 <tr>
-<td>permissions</td>
-<td>Object[]</td>
-<td>Permissions granted to this role</td>
+<td>PERMISSIONS</td>
+<td>Object[] Permissions granted to this role</td>
 </tr>
 </tbody></table>
 
@@ -3739,13 +3901,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Role id</td>
 </tr>
 </tbody></table>
@@ -3787,23 +3947,19 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Human-readable name</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of drafts to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -3845,29 +4001,24 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Role id</td>
 </tr>
 <tr>
-<td>slugname</td>
-<td>String</td>
+<td>SLUGNAME</td>
 <td>[Optional] Role name</td>
 </tr>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] Human-readable name</td>
 </tr>
 <tr>
-<td>permissions</td>
+<td>PERMISSIONS</td>
 <td>Object[]</td>
-<td>[Optional] Permissions granted to this role</td>
 </tr>
 </tbody></table>
 
@@ -3899,13 +4050,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Role id</td>
 </tr>
 </tbody></table>
@@ -3932,14 +4081,12 @@ This is a common subject across all Portware events.</p>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the desired snapshot</td>
 </tr>
 </tbody></table>
@@ -3973,18 +4120,16 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/system/snapshots</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>phone</td>
-<td>String</td>
+<td>PHONE</td>
 <td>Phone number, to which SMS notification will be send, with private key to decrypt snapshot</td>
 </tr>
 </tbody></table>
@@ -4025,33 +4170,28 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/system/users</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>username</td>
-<td>String</td>
+<td>USERNAME</td>
 <td>Name of the new user</td>
 </tr>
 <tr>
-<td>fullName</td>
-<td>String</td>
+<td>FULLNAME</td>
 <td>Human-readable name of the new user</td>
 </tr>
 <tr>
-<td>email</td>
-<td>String</td>
+<td>EMAIL</td>
 <td>Email address of the new user</td>
 </tr>
 <tr>
-<td>password</td>
-<td>String</td>
+<td>PASSWORD</td>
 <td>Password of the new user</td>
 </tr>
 </tbody></table>
@@ -4092,18 +4232,16 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/system/users/ldap</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>users</td>
-<td>String</td>
+<td>USERS</td>
 <td>Array of users, that need to be added to the system</td>
 </tr>
 </tbody></table>
@@ -4140,24 +4278,21 @@ This is a common subject across all Portware events.</p>
 
 <p><code class="prettyprint">POST /api/v1/system/users/&lt;id&gt;/roles</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the target user</td>
 </tr>
 <tr>
-<td>roleId</td>
+<td>ROLEID</td>
 <td>String[]</td>
-<td>Role id</td>
 </tr>
 </tbody></table>
 
@@ -4230,13 +4365,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the target user</td>
 </tr>
 </tbody></table>
@@ -4278,13 +4411,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the target user</td>
 </tr>
 </tbody></table>
@@ -4326,13 +4457,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the target user</td>
 </tr>
 </tbody></table>
@@ -4376,18 +4505,15 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of drafts to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -4431,33 +4557,27 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the desired user</td>
 </tr>
 <tr>
-<td>username</td>
-<td>String</td>
+<td>USERNAME</td>
 <td>[Optional] Name of the user</td>
 </tr>
 <tr>
-<td>fullName</td>
-<td>String</td>
+<td>FULLNAME</td>
 <td>[Optional] Human-readable name of the user</td>
 </tr>
 <tr>
-<td>email</td>
-<td>String</td>
+<td>EMAIL</td>
 <td>[Optional] Email address of the user</td>
 </tr>
 <tr>
-<td>password</td>
-<td>String</td>
+<td>PASSWORD</td>
 <td>[Optional] Password of the user</td>
 </tr>
 </tbody></table>
@@ -4490,18 +4610,15 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the user</td>
 </tr>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ROLEID</td>
 <td>ID of the desired role</td>
 </tr>
 </tbody></table>
@@ -4534,13 +4651,11 @@ This is a common subject across all Portware events.</p>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>ID of the user</td>
 </tr>
 </tbody></table>

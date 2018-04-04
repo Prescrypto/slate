@@ -4,7 +4,7 @@
 <pre class="highlight shell tab-shell"><code>
  curl <span class="se">\</span>
    -X GET <span class="se">\</span>
-   https://compliance-guard.lan/api/v1/entities/table-description/logbook
+   https://compliance-guard.lan/api/v1/entities/table-description/&lt;NAME&gt;
 
 </code></pre>
 <blockquote>
@@ -17,7 +17,7 @@
       </span><span class="s2">"entity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0dc26cc0-335c-40a7-ba5b-7f754693736a"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x8b52b173e82b57487c16c701bea5f4fb18088f11de10345e300baa7d55659865"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"logbook"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;name&gt;</span><span class="p">,</span><span class="w">
         </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
         </span><span class="s2">"archived"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
         </span><span class="s2">"mixins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">],</span><span class="w">
@@ -46,14 +46,12 @@
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Name of the entity</td>
 </tr>
 </tbody></table>
@@ -102,31 +100,13 @@
 
 <p><code class="prettyprint">POST /api/v1/entities</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>name</td>
-<td>String</td>
-<td>Name of the entity</td>
-</tr>
-<tr>
-<td>mixins</td>
-<td>String[]</td>
-<td>Array of used mixins</td>
-</tr>
-<tr>
-<td>fields</td>
-<td>String[]</td>
-<td>Array of fields, which entries of this type will have</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| NAME    | Name of the entity      |
+| MIXINS     | String[] | Array of used mixins      |
+| FIELDS     | String[] | Array of fields, which entries of this type will have      |</p>
 
 <h2 id="link-entities-to-each-other">Link Entities to each other</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -164,34 +144,12 @@
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>local</td>
-<td>String</td>
-<td>Id of an entity, which must be linked</td>
-</tr>
-<tr>
-<td>localField</td>
-<td>String</td>
-<td>Name of field, which will be contain foreign key value</td>
-</tr>
-<tr>
-<td>target</td>
-<td>String</td>
-<td>Id of an entity, to which &lsquo;local&rsquo; entity is linked</td>
-</tr>
-<tr>
-<td>targetField</td>
-<td>String</td>
-<td>Name of field, which one will be foreign key field</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| local    | Id of an entity, which must be linked      |
+| localField    | Name of field, which will be contain foreign key value      |
+| target    | Id of an entity, to which &lsquo;local&rsquo; entity is linked      |
+| targetField    | Name of field, which one will be foreign key field      |</p>
 
 <h2 id="get-entity-by-id">Get Entity by ID</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -233,19 +191,9 @@
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>String</td>
-<td>Id of the desired entity</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| id    | Id of the desired entity      |</p>
 
 <h2 id="get-entity-by-name">Get Entity by Name</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -287,19 +235,9 @@
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>name</td>
-<td>String</td>
-<td>Name of the desired entity</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| NAME    | Name of the desired entity      |</p>
 
 <h2 id="get-list-of-entities">Get list of Entities</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -346,23 +284,19 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] Name of the desired entity</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched entities. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of entities to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -392,16 +326,6 @@
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>name</td>
-<td>String</td>
-<td>Name of the desired entity</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+| NAME    | Name of the desired entity      |</p>

@@ -1,7 +1,11 @@
 <h1 id="devices">Devices</h1>
 
-<h2 id="add-new-device">Add new Device</h2>
-<pre class="highlight shell tab-shell"><code>
+<h2 id="add-new-device">Add New Device</h2>
+
+<blockquote>
+<p>To create new Order, use this code:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code> <span class="c"># With curl, you can just pass the correct header with each request</span>
  curl <span class="se">\</span>
    -X POST <span class="se">\</span>
    -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
@@ -25,29 +29,26 @@
   </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
-<p>Used to establish a new ComplianceGuard hardware unit. This endpoint stores the new Device’s info to the ComplianceGuard database for authorization. Normally the Integrator who is connecting an EMS or OMS to ComplianceGuard does this.</p>
+<p>This can be used to establish a new ComplianceGuard hardware unit. This endpoint stores the new Device’s info to the ComplianceGuard database for authorization. Usually the Integrator who connects the EMS or OMS to ComplianceGuard is resposible for this.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">POST /api/v1/system/devices</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Human-readable name of device</td>
 </tr>
 <tr>
-<td>hash</td>
-<td>String</td>
+<td>HASH</td>
 <td>Blockchain hash of an account, associated with this device</td>
 </tr>
 </tbody></table>
@@ -86,13 +87,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>Id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the desired device</td>
 </tr>
 </tbody></table>
@@ -133,28 +132,23 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] Human-readable name of device</td>
 </tr>
 <tr>
-<td>hash</td>
-<td>String</td>
+<td>HASH</td>
 <td>[Optional] Blockchain hash of an account, associated with this device</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -192,19 +186,9 @@
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>String</td>
-<td>of the desired device</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&ndash;|
+| ID     | of the desired device      |</p>
 
 <h2 id="delete-device">Delete Device</h2>
 <pre class="highlight shell tab-shell"><code>
@@ -231,16 +215,6 @@
 
 <h3 id="url-parameters">URL Parameters</h3>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>String</td>
-<td>of the desired device</td>
-</tr>
-</tbody></table>
+<p>| Parameter | Type   | Description |
+|&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;-|
+| ID     | of the desired device      |</p>

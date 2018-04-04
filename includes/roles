@@ -32,29 +32,25 @@
 
 <p><code class="prettyprint">POST /api/v1/system/roles</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>slugname</td>
-<td>String</td>
+<td>SLUGNAME</td>
 <td>Role name</td>
 </tr>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Human-readable name</td>
 </tr>
 <tr>
-<td>permissions</td>
-<td>Object[]</td>
-<td>Permissions granted to this role</td>
+<td>PERMISSIONS</td>
+<td>Object[] Permissions granted to this role</td>
 </tr>
 </tbody></table>
 
@@ -93,13 +89,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Role id</td>
 </tr>
 </tbody></table>
@@ -141,23 +135,19 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>Human-readable name</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched drafts. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of drafts to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -199,29 +189,24 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Role id</td>
 </tr>
 <tr>
-<td>slugname</td>
-<td>String</td>
+<td>SLUGNAME</td>
 <td>[Optional] Role name</td>
 </tr>
 <tr>
-<td>name</td>
-<td>String</td>
+<td>NAME</td>
 <td>[Optional] Human-readable name</td>
 </tr>
 <tr>
-<td>permissions</td>
+<td>PERMISSIONS</td>
 <td>Object[]</td>
-<td>[Optional] Permissions granted to this role</td>
 </tr>
 </tbody></table>
 
@@ -253,13 +238,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Role id</td>
 </tr>
 </tbody></table>

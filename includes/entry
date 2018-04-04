@@ -38,23 +38,20 @@
 
 <p><code class="prettyprint">POST /api/v1/entries/&lt;entityId&gt;</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the corresponding entity</td>
 </tr>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>[Optional] Id of the target entry to update. No data actually changed, and chain of changes created instead</td>
 </tr>
 </tbody></table>
@@ -112,23 +109,20 @@
 
 <p><code class="prettyprint">POST /api/v1/entries/&lt;entityId&gt;/form</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the corresponding entity</td>
 </tr>
 <tr>
-<td>[Optional]</td>
-<td>String</td>
+<td>[OPTIONAL]</td>
 <td>chainId Id of the target entry to update. No data actually changed, and chain of changes created instead</td>
 </tr>
 </tbody></table>
@@ -199,23 +193,20 @@
 
 <p><code class="prettyprint">POST /api/v1/entries/&lt;entityId&gt;/form</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the corresponding entity</td>
 </tr>
 <tr>
-<td>[Optional]</td>
-<td>String</td>
+<td>[OPTIONAL]</td>
 <td>chainId Id of the target entry to update. No data actually changed, and chain of changes created instead</td>
 </tr>
 </tbody></table>
@@ -263,23 +254,19 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the corresponding entity</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -327,23 +314,19 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -415,28 +398,23 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the entity, which items you want to see</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -482,13 +460,11 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 </tbody></table>
@@ -527,18 +503,15 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the specific changeset</td>
 </tr>
 </tbody></table>
@@ -610,33 +583,27 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the specific changeset</td>
 </tr>
 <tr>
-<td>entityId</td>
-<td>String</td>
+<td>ENTITYID</td>
 <td>Id of the entity, which items you want to see</td>
 </tr>
 <tr>
-<td>limit</td>
-<td>String</td>
+<td>LIMIT</td>
 <td>[Optional] Limit of number of fetched devices. Default value: 0</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>String</td>
+<td>OFFSET</td>
 <td>[Optional] Number of devices to skip. Default value: 5</td>
 </tr>
 </tbody></table>
@@ -682,18 +649,15 @@
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>chainId</td>
-<td>String</td>
+<td>CHAINID</td>
 <td>Id of the original entry</td>
 </tr>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the specific changeset</td>
 </tr>
 </tbody></table>

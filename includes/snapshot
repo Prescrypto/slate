@@ -20,14 +20,12 @@
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Attribute</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>String</td>
+<td>ID</td>
 <td>Id of the desired snapshot</td>
 </tr>
 </tbody></table>
@@ -61,18 +59,16 @@
 
 <p><code class="prettyprint">POST /api/v1/system/snapshots</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="payload-attributes">Payload Attributes</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>phone</td>
-<td>String</td>
+<td>PHONE</td>
 <td>Phone number, to which SMS notification will be send, with private key to decrypt snapshot</td>
 </tr>
 </tbody></table>
