@@ -1055,28 +1055,28 @@ curl -X POST <span class="se">\</span>
 
         }, \
         "merge" : { \
-          "program_id": "", \
-          "parent_id": "", \
-          "quantity": "", \
-          "side": "", \
-          "price": "", \
-          "allocation_account": "", \
-          "allocation_quantity": "", \
-          "price_type_qualifier": "", \
-          "tif": "", \
-          "expiry": "", \
-          "settlement_date": "", \
-          "ccy_pair": "", \
-          "fixing_date": "", \
-          "order_type": "", \
-          "stop_price": "", \
-          "par_value": "", \
-          "maturity_date": "", \
-          "strike_price": "", \
-          "executed_volume": "", \
-          "committed_volume": "", \
-          "owner": "", \
-          "merge_id": "" \
+          "program_id": "ad21", \
+          "parent_id": "bbd6", \
+          "quantity": "1235", \
+          "side": "S", \
+          "price": "3400", \
+          "allocation_account": "f32aa264d1ad", \
+          "allocation_quantity": "1200", \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "3 days", \
+          "settlement_date": "18-04-2018", \
+          "ccy_pair": "d0691c48", \
+          "fixing_date": "20-06-2018", \
+          "order_type": "stop-limit", \
+          "stop_price": "200", \
+          "par_value": "200", \
+          "maturity_date": "18-04-2018", \
+          "strike_price": "3000", \
+          "executed_volume": "13456", \
+          "committed_volume": "1235", \
+          "owner": "owner name", \
+          "merge_id": "f32aa264d1ad" \
         } \
     }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
@@ -1262,8 +1262,8 @@ curl -X POST <span class="se">\</span>
 
         }, \
         "split" : { \
-          "split_quantity": "", \
-          "split_id": "" \
+          "split_quantity": "123", \
+          "split_id": "1450cbe2e0b" \
         } \
     }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
@@ -1584,13 +1584,13 @@ curl -X POST <span class="se">\</span>
 
         }, \
         "execution" : { \
-          "execution_amount": "", \
-          "execution_type": "", \
-          "execution_source": "", \
-          "execution_price": "", \
-          "fx_spot_rate": "", \
-          "fx_forward_points": "", \
-          "execution_id": "" \
+          "execution_amount": "1000", \
+          "execution_type": "Bust", \
+          "execution_source": "allocation 00123", \
+          "execution_price": "232.00", \
+          "fx_spot_rate": null, \
+          "fx_forward_points": null, \
+          "execution_id": "112345" \
 
         }, \
         "placement" : { \
@@ -1717,15 +1717,15 @@ curl -X POST <span class="se">\</span>
 
         }, \
         "pt_allocation" : { \
-          "allocation_quantity": "", \
-          "allocation_price": "", \
-          "allocation_account": "", \
-          "allocation_destination": "", \
-          "allocation_method": "", \
-          "fee_type": "", \
-          "fee_amount": "", \
-          "clearing_broker": "", \
-          "pt_allocation_id": "" \
+          "allocation_quantity": "200", \
+          "allocation_price": "1000", \
+          "allocation_account": "1450cbe2e0be538", \
+          "allocation_destination": "2f464660bf8bc580bc1", \
+          "allocation_method": "best-fit", \
+          "fee_type": "iva", \
+          "fee_amount": "0.8", \
+          "clearing_broker": "bbd6", \
+          "pt_allocation_id": "1450cbe2e0basD" \
         } \
     }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
@@ -1856,9 +1856,9 @@ curl -X POST <span class="se">\</span>
 
         }, \
         "alert" : { \
-          "alert_type": "", \
-          "alert_reason_text": "", \
-          "alert_id": "" \
+          "alert_type": "success-payment", \
+          "alert_reason_text": "Success payment", \
+          "alert_id": "ad21-45db" \
         } \
     }'</span> <span class="se">\</span>
     <span class="o">{</span>base_url<span class="o">}{</span>url<span class="o">}</span>
