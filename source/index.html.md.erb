@@ -1,0 +1,436 @@
+---
+title: ComplianceGuard API Reference
+
+language_tabs:
+  - shell
+
+toc_footers:
+  - <a href='https://www.cgblockchain.com/'>More info</a>
+  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
+
+includes:
+  - devices
+  - draft
+  - field
+  - entity
+  - entry
+  - roles
+  - snapshot
+  - users
+  - errors
+
+search: true
+---
+
+# Introduction
+
+Welcome to the ComplianceGuard API Documentation! ComplianceGuard’s API platform includes numerous endpoints to help you build your solutions.
+To get started, you will first need to change the base url {base_url} on our website at `https://www.cgblockchain.com/` Next, you will need to use the endpoint 'url' i.e. `New Order == "api/v1/neworder"` The final url result should be: `https://www.cgblockchain.com/api/v1/neworder`
+
+In this API Documentation, you will notice that each data subject contains 3 components.  The “subject name” refers to the block name, “scope” is the frequency of which a block is provided for the data subject, and “attributes” are the contents of each data subject. As the ComplianceGuard API is based on an event-driven architecture, each event will be represented by one or more data subjects based on the Lifecyle of an order.
+
+
+# Anticipated API users
+
+There are 4 main roles that are accounted for in this API:
+
+- ComplianceGuard Developers – The CGBlockchain Development Team
+
+- Clients – Hedge Funds that install ComplianceGuard
+
+- Integrators- Companies that connect ComplianceGuard with the software used by the Client (their EMS or OMS)
+
+- Software Provider – The provider of an EMS or OMS solution
+
+# Terminology
+
+Some clarity about our use of terms may be helpful to familiarize the new user with how our API works. Devices refer to ComplianceGuard hardware units. Each Client may have numerous Devices. Entities are categories of data that ComplianceGuard records and stores (such as business conduct rules, execution mandates, compliance alerts, etc.). Entities are constructed through the intermediate state of Drafts, which automatically become Entities when they have been finalized. Each particular Entity is made up of a set of Fields. Entries are Fields where the Client will enter into ComplianceGuard (such as particular instances of compliance alerts or transactions).
+
+# Authentication
+
+ComplianceGuard is flexible on authentication, which is highly dependent on each client’s respective requirements. The current version supports the following basic authentication mechanisms:
+
+* Providing authentication token by HTTP header Authorization;
+
+* Signing all HTTP requests by client's certificate.
+
+As a general guideline, agreement on the authentication schema should be a topic for discussion with Integrators.
+
+
+# Order
+
+<%= partial "partials/order_security_sender_description.html" %>
+
+Below describe attributes for those three main subjects that should be repetead by every endpoint
+
+ORDER_ATTRIBUTES
+
+Scope : A block will be included for both CURRENT & PREVIOUS state.
+
+The description for each attribute under the 'ORDER_ATTRIBUTES' data subject are as follows:
+
+Attribute | Description
+--------- | -------
+PROGRAM_ID | The Program ID of the Portware Basket.
+PARENT_ID | The Parent ID representing the order.
+QUANTITY | The Order Quantity submitted on the order.
+SIDE | The side of the order (i.e.B/S/SS).
+PRICE | The price provided on the order.
+PRICE_TYPE_QUALIFIER | Held, Not Held
+TIF | GTC, Day, GTD
+EXPIRY | Expiry of the order.
+SETTLEMENT_DATE | Settlement date of the order.
+CCY_PAIR | If the event is associated with an FX order, currency pair will be included.
+FIXING_DATE | If the event is associated with an FX NDF order, fixing date will be included.
+ORDER_TYPE | Stop, Stop Limit, Limit Market
+STOP_PRICE | Stop price if the if the ORDER_TYPE is stop limit.
+PAR_VALUE | Included if the order is specific to Fixed Income.
+MATURITY_DATE | The Maturity date of a Fixed income or futures contract.
+STRIKE_PRICE | The strike price of an options contract.
+EXECUTED_VOLUME | The volume executed at the time of an event.
+COMMITTED_VOLUME | Any remaining quantity currently allocated to a service / broker at the time of an event.
+OWNER | The current owner of the order.
+ORDER_ATTRIBUTE_ID | ID assigned to the ORDER_ATTRIBUTES block.
+
+ALLOCATION attribute repeats for each account provided
+
+Attribute | Description
+--------- | -------
+ALLOCATION_ACCOUNT | The allocations associated with the incoming order.
+ALLOCATION_QUANTITY | The quantity associated with the referenced account.
+
+SECURITY
+
+Scope : A block will only be included for the CURRENT state. Information provided will be consistent across the entire order lifecycle.
+The description for each attribute under the 'SECURITY' data subject are as follows:
+
+Attribute | Description
+--------- | -------
+METADATA_STRING | A combination of Currency Pair, Near Date, and Far Date (in the case of a swap), and the time entered.
+SEDOL | The SEDOL of an equity.
+OCC_Symbol | The OCC Symbol for an equity option.
+TICKER | The ticker of the futures contract.
+Instrument_Symbol | The Symbol of the bond or index.
+SECURITY_ID | ID assigned to the SECURITY block.
+
+SENDER
+
+Scope : A block will only be included for the CURRENT state.
+
+The description for each attribute under the 'SENDER' data subject are as follows:
+
+Attribute | Description
+--------- | -------
+FIRM_ID | ID representing the FIRM to which an order is associated.
+USER | ID of the user that actioned the event. This can either be a system ID or user ID.
+TIMESTAMP | The timestamp at which the event is generated.
+SENDER_ID | ID assigned to the SENDER block.
+
+## New order
+
+> To create new Order, use this code:
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/order_status.html" %>
+
+> Change {base_url} with main domain and {url} with corresponding endpoint url
+
+### HTTP Request
+
+`POST api/v1/order/`
+
+The `'ORDER_STATUS'` data subject provides the state of the order within the lifecycle; both current and previous.
+
+### Payload Attributes
+
+Attributes | Description
+--------- | -------
+NEW_ORDER | Represents a new order at the inception of the order lifecycle.
+ORDER_AMEND | Represents an amendment to an order's attributes.
+ORDER_CANCEL | Represents the cancellation of an order.
+ORDER_COMPLETE | Represents the completion of an order.
+SENT_TO_TRADE | Represents an order passing compliance, and being sent to trade.
+PARENT_ORDER_CREATION | Represents the activation of the order following the 'SENT_TO_TRADE' event.
+ARCHIVE | Represents an order's archival.
+ORDER_STATUS_ID | ID assigned to the ORDER_STATUS block.
+
+## Run compliance
+
+> To create compliance, use this code:
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/compliance.html" %>
+
+> Change {base_url} with main domain and {url} with corresponding endpoint url
+
+### HTTP Request
+
+`POST api/v1/compliance/`
+
+The `'COMPLIANCE'` data subject provides a repeating status of compliance checks performed during the order lifecycle.
+For every rule applied, a type, rule description, status and plain English result text will be provided.
+
+### Payload Attributes
+
+Attribute | Description
+--------- | -------
+COMPLIANCE_RUN | It is the iteration of compliance applied to an order.
+COMPLIANCE_ID | It is the ID assigned to the COMPLIANCE block.
+
+`Scope` Repeats per compliance rule applied to an order, and provides the result.
+
+## Sent to trade
+
+> To create sent to trade Order, use this code:
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/order_status.html" %>
+
+> Change {base_url} with main domain and {url} with corresponding endpoint url
+
+### HTTP Request
+
+`POST api/v1/order/{order_id}/sent_to_trade`
+
+SENT_TO_TRADE represents an order passing compliance, and being sent to trade. It is an attribute of the ‘ORDER_STATUS’ block name that provides the state of the order within the lifecycle; both current and previous.
+
+`Scope` A block will be included for both CURRENT & PREVIOUS state.
+
+## Parent Order Creation
+
+> To create Parent creation Order, use this code:
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/order_status.html" %>
+
+> Change {base_url} with main domain and {url} with corresponding endpoint url
+
+### HTTP Request
+
+`POST api/v1/order/{order_id}/parent_creation`
+
+PARENT_ORDER_CREATION represents the activation of the order following the 'SENT_TO_TRADE' event. It is also an attribute of the ‘ORDER_STATUS’ block name that provides the state of the order within the lifecycle; both current and previous.
+
+`Scope` A block will be included for both CURRENT & PREVIOUS state.
+
+# Assign / acquire
+
+> To create Assign/acquire Order, use this code:
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/no_object.html" %>
+
+> Change {base_url} with main domain and {url} with corresponding endpoint url
+
+### HTTP Request
+
+`POST api/v1/order/{order_id}/assign`
+
+<%= partial "partials/order_security_sender_description.html" %>
+
+Assign/Acquire is an event that represents a milestone for the lifecycle of an order. It represents 3 data subjects: ORDER_ATTRIBUTE, SECURITY, SENDER.
+
+# Merge / split
+## Merge
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/merge.html" %>
+
+### HTTP Request
+
+`POST api/v1/merge/{order_id}`
+
+The `'MERGE'` data subject is generated when two orders are joined in Portware. When this happens, the order details of
+the merged order will be included within this block. It will repeat every merge that takes place in Portware.
+
+Scope: A block will repeat to include each block that is merged with the order.
+
+### Payload Attributes
+
+The description for each attribute under the ‘MERGE’ data subject are as follows:
+
+Attribute | Description
+--------- | -------
+PROGRAM_ID | Program ID of the Portware Basket.
+PARENT_ID | Parent ID representing the order.
+QUANTITY | Order Quantity submitted on the order.
+SIDE | The side of the order (i.e. B/S/SS)
+PRICE | The price provided on the order.
+ALLOCATION_ACCOUNT | The allocations associated with the incoming order.
+ALLOCATION_QUANTITY | The quantity associated with the referenced account.
+PRICE_TYPE_QUALIFIER | Held, Not Held
+TIF | GTC, Day, GTD
+EXPIRY | Expiry of the order.
+SETTLEMENT_DATE | Settlement date of the order.
+CCY_PAIR | If the event is associated with an FX order, currency pair will be included.
+FIXING_DATE | If the event is associated with an FX NDF order, fixing date will be included.
+ORDER_TYPE | Stop, Stop Limit, Limit Market
+STOP_PRICE | Stop price if the ORDER_TYPE is stop limit.
+PAR_VALUE | Included if the order is specific to Fixed Income.
+MATURITY_DATE | The Maturity date of a Fixed income or futures contract.
+STRIKE_PRICE | The strike price of an options contract.
+EXECUTED_VOLUME | The volume executed at the time of an event.
+COMMITTED_VOLUME | Any remaining quantity currently allocated to a service / broker at the time of an event.
+OWNER | The current owner of the order
+MERGE_ID | The ID assigned to the MERGE block
+
+## Split
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/split.html" %>
+
+### HTTP Request
+
+`POST api/v1/split/{order_id}`
+
+The `'SPLIT'` data subject will detail quantity that is split off from the order. It will repeat for each split executed against theorder during the lifecycle.
+
+Scope: A block will repeat to include each quantity split from the order.
+
+### Payload Attributes
+
+Attribute | Description
+--------- | -------
+SPLIT_QUANTITY | It is the quantity of the order that was split.
+SPLIT_ID | It is the ID assigned to the SPLIT block.
+
+# Sweep
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/sweep.html" %>
+
+### HTTP Request
+
+`POST api/v1/sweep/{order_id}`
+
+The `'SWEEP'` data subject details advertisements sent to dark pools associated with the order. This will repeat for each
+sweep performed on an order.
+
+Scope: A block will be included for both CURRENT & PREVIOUS state, and it will repeat for each Sweep.
+
+### Payload Attributes
+
+Attribute | Description
+--------- | -------
+OPEN_QUANTITY | It is the quantity advertised to a dark pool.
+SWEEP_DESITNATION | It is the dark pool a trader is targeting for the quantity advertised.
+SWEEP_ID | It represents the ID assigned to the SWEEP block.
+
+# Placements
+
+The ‘PLACEMENT’ data subject provides data associated with child orders sent to market to trade. It will detail the
+quantity, destination, and other attributes of the placement. It will be repeated to include all associated placements, as
+well as the current and previous states.
+
+## New Placement
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/placement.html" %>
+
+### HTTP Request
+
+`POST api/v1/placements/`
+
+New Placement is an event that represents a milestone for the lifecycle of an order.
+The lifecycle includes the following 4 data subjects: ORDER_ATTRIBUTE, SECURITY, SENDER, PLACEMENT.
+
+`Scope` A block will be included for both CURRENT & PREVIOUS state, and it will
+repeat for each placement.
+
+# Executions
+
+The ‘EXECUTION’ data subject provides fill level details for any placement sent to market. It will repeat for each
+execution provided to a placement (which will also accompany the data subject). Both the current and previous state will
+be provided.
+
+## Execution
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/execution.html" %>
+<%= partial "partials/placement.html" %>
+
+### HTTP Request
+
+`POST api/v1/executions/`
+
+### Payload Attributes
+
+Attribute | Description
+--------- | -------
+EXECUTION_AMOUNT | It refers to the amount provided on an execution.
+EXECUTION_TYPE | It represents Bust, Amend, New.
+EXECUTION_SOURCE | It refers to the source of the execution.
+EXECUTION_PRICE | refers to the price of the execution.
+EXECUTION_ID | It is the ID assigned to the EXECUTION block.
+
+`Scope` A block will be included for both CURRENT & PREVIOUS state, and it will
+repeat for each execution.
+
+# Post Trade Allocation
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/post_trade.html" %>
+
+### HTTP Request
+
+`POST api/v1/post_trade_allocation`
+
+The `'PT_ALLOCATION'` data subject provides detail for any post-trade allocation performed on an order. It will detail the
+account, quantity, price, and associated fees. This will repeat for each allocation (totaling up to the quantity of an order).
+Both the current and previous state will be provided.
+
+'Scope' A block will be included for both CURRENT & PREVIOUS state, and it will repeat for each allocation.
+
+### Payload Attributes
+
+The attributes for PT Allocation include the following:
+
+Attribute | Description
+--------- | -------
+ALLOCATION_QUANTITY | It is the amount that is being allocated.
+ALLOCATION_ACCOUNT | It is the account in which the referenced amount is allocated.
+ALLOCATION_DESTINATION | It is any destination specific to an allocation.
+ALLOCATION_METHOD | It refers to the method used (i.e. best-fit, pro- rata, etc.) to allocate.
+FEE_TYPE | It is type of fee applied to the allocation.
+FEE_AMOUNT | It refers to fee amount applied to the allocation.
+CLEARING_BROKER | It refers to an associated clearing broker.
+PT_ALLOCATION_ID | It is the ID assigned to the PT_ALLOCATION block.
+
+# Exception
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/alert.html" %>
+
+### HTTP Request
+
+`POST api/v1/exceptions`
+
+“Exception” is an event that represents a milestone for the lifecycle of an order. This refers to 4 data subjects: ORDER_ATTRIBUTE, SECURITY, SENDER, ALERT.
+
+The `'ALERT'` data subject will be generated whenever an exception is raised in association with the order. The subject
+will be repeated for each exception raised during the order lifecycle.
+
+`Scope` A block will be included for both CURRENT & PREVIOUS state, and it will repeat for each alert.
+
+### Payload Attributes
+
+The  'ALERT' data subject includes the following attributes:
+
+Attribute | Description
+--------- | -------
+ALERT_TYPE | It refers to the exception type associated with an alert.
+ALERT_REASON_TEXT | It is the reason text provided.
+ALERT_ID | It is the ID assigned to the ALERT block.
+
+# archive
+
+<%= partial "partials/order_security_sender.html" %>
+<%= partial "partials/no_object.html" %>
+
+### HTTP Request
+
+`POST api/v1/executions/archive`
+
+Archive is an event that refers to the following 3 data subjects: ORDER_ATTRIBUTE, SECURITY, SENDER.
+
+<%= partial "partials/order_security_sender_description.html" %>

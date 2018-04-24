@@ -1,0 +1,45 @@
+```shell
+# With curl, you can just pass the correct header with each request
+curl -X POST \
+  -d '{ \
+        "order_attributes": { \
+          "program_id": 1, \
+          "parent_id": 12, \
+          "quantity": "1", \
+          "side": "B", \
+          "price": "1200", \
+          "allocations": [ \
+            { \
+              "allocation_account": "allocation account", \
+              "allocation_quantity": "1200" \
+            } \
+          ], \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "365", \
+          "settlement_date": "01-19-2018", \
+          "ccy_pair": null, \
+          "fixing_date": null, \
+          "order_type": "stop limit", \
+          "stop_price": "500", \
+          "par_value": "non par", \
+          "maturity_date": "01-19-2018", \
+          "strike_price": "1500", \
+          "executed_volume": "20000", \
+          "committed_volume": "345", \
+          "owner": "user name", \
+          "order_attribute_id": 1235623 \
+        }, \
+        "security": { \
+          "metadata_string": "US1801201801092019", \
+          "sedol": "0.012", \
+          "occ_symbol": "OC1245", \
+          "ticker": "AC1235-B123C", \
+          "instrument_symbol": "OCINT123456", \
+          "security_id": "235" \
+        }, \
+        "sender": { \
+          "firm_id": "as135j32jbg1353+13432j234sdf23+dsf==", \
+          "user": "user name", \
+          "timestamp": "2018-03-03T20:28:27.693322", \
+          "sender_id": "124" \

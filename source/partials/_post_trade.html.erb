@@ -1,0 +1,40 @@
+        }, \
+        "pt_allocation" : { \
+          "allocation_quantity": "200", \
+          "allocation_price": "1000", \
+          "allocation_account": "1450cbe2e0be538", \
+          "allocation_destination": "2f464660bf8bc580bc1", \
+          "allocation_method": "best-fit", \
+          "fee_type": "iva", \
+          "fee_amount": "0.8", \
+          "clearing_broker": "bbd6", \
+          "pt_allocation_id": "1450cbe2e0basD" \
+        } \
+    }' \
+    {base_url}{url}
+
+```
+
+> The above command returns JSON structured like this:
+
+```json
+
+  {
+    "status": "success",
+    "data": {
+      "entry": {
+        "id": "d0691c48-ad21-45db-bbd6-f32aa264d1ad",
+        "hash": "0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2",
+        "_ts": "2017-07-24T11:53:20.108Z",
+        "revision": 1,
+        "chainId": null,
+        "entityId": "1cedf4ab-befd-44aa-b31b-86d612f4068e",
+        "values": {
+          "incident": "post_trade",
+          "explanation": "test reason"
+        }
+      }
+    }
+  }
+
+```

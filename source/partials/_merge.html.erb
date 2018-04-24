@@ -1,0 +1,53 @@
+        }, \
+        "merge" : { \
+          "program_id": "ad21", \
+          "parent_id": "bbd6", \
+          "quantity": "1235", \
+          "side": "S", \
+          "price": "3400", \
+          "allocation_account": "f32aa264d1ad", \
+          "allocation_quantity": "1200", \
+          "price_type_qualifier": "Held", \
+          "tif": "GTC", \
+          "expiry": "3 days", \
+          "settlement_date": "18-04-2018", \
+          "ccy_pair": "d0691c48", \
+          "fixing_date": "20-06-2018", \
+          "order_type": "stop-limit", \
+          "stop_price": "200", \
+          "par_value": "200", \
+          "maturity_date": "18-04-2018", \
+          "strike_price": "3000", \
+          "executed_volume": "13456", \
+          "committed_volume": "1235", \
+          "owner": "owner name", \
+          "merge_id": "f32aa264d1ad" \
+        } \
+    }' \
+    {base_url}{url}
+
+```
+
+> The above command returns JSON structured like this:
+
+```json
+
+  {
+    "status": "success",
+    "data": {
+      "entry": {
+        "id": "d0691c48-ad21-45db-bbd6-f32aa264d1ad",
+        "hash": "0xc0dbcf141450cbe2e0be538db7b7a1242f464660bf8bc580bc1b86b84d1407d2",
+        "_ts": "2017-07-24T11:53:20.108Z",
+        "revision": 1,
+        "chainId": null,
+        "entityId": "1cedf4ab-befd-44aa-b31b-86d612f4068e",
+        "values": {
+          "incident": "merge",
+          "explanation": "test reason"
+        }
+      }
+    }
+  }
+
+```
