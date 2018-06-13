@@ -260,11 +260,11 @@
 <p>To authorize, use this code:</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
-  https://cgb-pw.herokuapp.com/user/login <span class="se">\</span>
+  https://cgb-pw.herokuapp.com/api/v1/user/login <span class="se">\</span>
   -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
   -d <span class="s1">'{
-      "email": "jesus@prescrypto.com",
-      "password": "admin1234"
+      "email": "user@company.com",
+      "password": "adminpassword"
     }'</span>
 </code></pre>
 <blockquote>
@@ -291,7 +291,7 @@ You must replace <code><TOKEN></code> with your personal API key.
 <blockquote>
 <p>To create new user, use this code:</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>curl -X POST https://cgb-pw.herokuapp.com/user <span class="se">\</span>
+<pre class="highlight shell tab-shell"><code>curl -X POST https://cgb-pw.herokuapp.com/api/v1/user <span class="se">\</span>
   -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
   -d <span class="s1">'{
       "email": "user@company.com",
@@ -328,7 +328,7 @@ You must replace <code><TOKEN></code> with your personal API key.
 </tr>
 </tbody></table>
 <h1 id='xmlendpoint'>Xmlendpoint</h1><h2 id='create-xml-post'>Create XML POST</h2><pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
-  https://cgb-pw.herokuapp.com/xmlendpoint <span class="se">\</span>
+  https://cgb-pw.herokuapp.com/api/v1/xmlendpoint <span class="se">\</span>
   -H <span class="s1">'Authorization: Bearer &lt;TOKEN&gt;'</span> <span class="se">\</span>
   -H <span class="s1">'Content-Type: text/xml'</span> <span class="se">\</span>
   -d <span class="s1">'&lt;check check_log_detail_count="0"&gt;
@@ -347,7 +347,7 @@ You must replace <code><TOKEN></code> with your personal API key.
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5b2184b32b68440014bf661f"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p><code>POST https://cgb-pw.herokuapp.com/xmlendpoint</code></p>
+<p><code>POST https://cgb-pw.herokuapp.com/api/v1/xmlendpoint</code></p>
 
 <table><thead>
 <tr>
@@ -369,7 +369,7 @@ You must replace <code><TOKEN></code> with your personal API key.
 This endpoint use schemeless store to xml data, so you can send us xml with whatever structure!
 </aside>
 <h2 id='get-a-specific-xml-data'>Get a Specific XML data</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
-  https://cgb-pw.herokuapp.com/xmlendpoint/5b2184b32b68440014bf661f <span class="se">\</span>
+  https://cgb-pw.herokuapp.com/api/v1/xmlendpoint/5b2184b32b68440014bf661f <span class="se">\</span>
   -H <span class="s1">'Authorization: Bearer &lt;TOKEN&gt;'</span>
 </code></pre>
 <blockquote>
