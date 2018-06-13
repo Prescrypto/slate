@@ -1,7 +1,7 @@
 ---
 title: CGB XMLENDPOINT API Reference
 
-language_tabs: # must be one of https://git.io/vQNgJ
+language_tabs: 
   - shell
 
 toc_footers:
@@ -27,11 +27,11 @@ Follow the next steps to know how to use our API. Let's doing!
 
 ```shell
 curl -X POST \
-  https://cgb-pw.herokuapp.com/user/login \
+  https://cgb-pw.herokuapp.com/api/v1/user/login \
   -H 'Content-Type: application/json' \
   -d '{
-      "email": "jesus@prescrypto.com",
-      "password": "admin1234"
+      "email": "user@company.com",
+      "password": "adminpassword"
     }'
 ```
 
@@ -60,7 +60,7 @@ You must replace <code><TOKEN></code> with your personal API key.
 > To create new user, use this code:
 
 ```shell
-curl -X POST https://cgb-pw.herokuapp.com/user \
+curl -X POST https://cgb-pw.herokuapp.com/api/v1/user \
   -H 'Content-Type: application/json' \
   -d '{
       "email": "user@company.com",
@@ -96,7 +96,7 @@ password | String password keep in safe place
 
 ```shell
 curl -X POST \
-  https://cgb-pw.herokuapp.com/xmlendpoint \
+  https://cgb-pw.herokuapp.com/api/v1/xmlendpoint \
   -H 'Authorization: Bearer <TOKEN>' \
   -H 'Content-Type: text/xml' \
   -d '<check check_log_detail_count="0">
@@ -117,7 +117,7 @@ curl -X POST \
 }
 ```
 
-`POST https://cgb-pw.herokuapp.com/xmlendpoint`
+`POST https://cgb-pw.herokuapp.com/api/v1/xmlendpoint`
 
 Parameter | Default | Description
 --------- | ------- | -----------
@@ -135,7 +135,7 @@ This endpoint use schemeless store to xml data, so you can send us xml with what
 
 ```shell
 curl -X GET \
-  https://cgb-pw.herokuapp.com/xmlendpoint/5b2184b32b68440014bf661f \
+  https://cgb-pw.herokuapp.com/api/v1/xmlendpoint/5b2184b32b68440014bf661f \
   -H 'Authorization: Bearer <TOKEN>'
 ```
 
