@@ -5,8 +5,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - shell
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
+  - <a href='https://www.cgblockchain.com/'>About CGB</a>
 
 includes:
   - errors
@@ -26,36 +25,79 @@ Follow the next steps to know how to use our API. Let's doing!
 
 > To authorize, use this code:
 
-
-
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl -X POST \
+  https://cgb-pw.herokuapp.com/user/login \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "email": "jesus@prescrypto.com",
+      "password": "admin1234"
+    }'
 ```
 
+> The above command returns JSON structured like this:
 
-> Make sure to replace `meowmeowmeow` with your API key.
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkQXQiOjE1Mjg5MDUyNzM1MjMsInVwZGF0ZWRBdCI6MTUyODkwNTI3MzUyMywiaWQiOiI1YjIxM2UzOTNmNTljYTAwMTRiZmFmNzMiLCJlbWFpbCI6Implc3VzQHByZXNjcnlwdG8uY29tIiwiaWF0IjoxNTI4OTIyODM3LCJleHAiOjE1Mjg5MjY0Mzd9.CsSQDQonYQqphi9BNKaWDt6lXJ5-vSa09B5MRBwIV-o"
+}
+```
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+> Make sure to replace `<TOKEN>` with your API key.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+XMLEndpoint uses API keys to allow access to the API. 
 
-`Authorization: meowmeowmeow`
+XMLEndpoint expects for the API key to be included in all API requests to the server in a header that looks like the following: 
+
+`Authorization: Bearer <TOKEN>`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code><TOKEN></code> with your personal API key.
 </aside>
 
-# Kittens
+# Users
 
-## Get All Kittens
+> To create new user, use this code:
+
+```shell
+curl -X POST https://cgb-pw.herokuapp.com/user \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "email": "user@company.com",
+      "password": "adminpassword"
+    }'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "createdAt": 1528922588700,
+    "updatedAt": 1528922588700,
+    "id": "5b2181dc2b68440014bf661e",
+    "email": "user@company.com"
+}
+```
+
+Must have an user before authenticate, and use our API.
+
+So following the next steps you will have an `user` and `password`
+
+Parameter | Description
+--------- | -----------
+email | String email of user
+password | String password keep in safe place 
+
+
+
+# xmlendpoint
+
+## Get All XMLs
 
 
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+
 ```
 
 
@@ -80,18 +122,18 @@ curl "http://example.com/api/kittens"
 ]
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all xmlendpoint.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET https://cgb-pw.herokuapp.com/xmlendpoint`
 
 ### Query Parameters
 
 Parameter | Default | Description
 --------- | ------- | -----------
 include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+available | true | If set to false, the result will include xmlendpoint that have already been adopted.
 
 <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
@@ -100,8 +142,8 @@ Remember — a happy kitten is an authenticated kitten!
 ## Get a Specific Kitten
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+curl "https://cgb-pw.herokuapp.com/xmlendpoint/2"
+  -H "Authorization: <TOKEN>"
 ```
 
 > The above command returns JSON structured like this:
@@ -122,7 +164,7 @@ This endpoint retrieves a specific kitten.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET http://example.com/xmlendpoint/<ID>`
 
 ### URL Parameters
 
@@ -134,9 +176,9 @@ ID | The ID of the kitten to retrieve
 
 
 ```shell
-curl "http://example.com/api/kittens/2"
+curl "https://cgb-pw.herokuapp.com/xmlendpoint/<ID>"
   -X DELETE
-  -H "Authorization: meowmeowmeow"
+  -H "Authorization: <TOKEN>"
 ```
 
 
@@ -153,7 +195,7 @@ This endpoint deletes a specific kitten.
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`DELETE http://example.com/xmlendpoint/<ID>`
 
 ### URL Parameters
 
