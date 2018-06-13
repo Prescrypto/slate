@@ -90,116 +90,68 @@ password | String password keep in safe place
 
 
 
-# xmlendpoint
+# Xmlendpoint
 
-## Get All XMLs
-
-
+## Create XML POST
 
 ```shell
-
+curl -X POST \
+  https://cgb-pw.herokuapp.com/xmlendpoint \
+  -H 'Authorization: Bearer <TOKEN>' \
+  -H 'Content-Type: text/xml' \
+  -d '<check check_log_detail_count="0">
+    <check_log A_CHKID="CHK9320" A_CHKSTA="0" A_CHKACT="-1" A_CHKUSRID="mveevers" A_CHKSTRTME="20180430150057327" A_CHKENDTME="20180430150057327" A_ORDID="O84395" A_PLCID="O84395" A_EXEID="" A_INSID="RMV LN Equity-LT" A_INSNAM="RIGHTMOVE PLC" A_PARINSID="" A_PARINSNAM="" A_RULID="" A_RULNAM="" A_RULDSC="" A_RULCATID="" A_PSTTRD="N" A_PREORD="N" A_PREEXE="N" A_PREPLC="Y" A_OBJLISID="" A_CCYCDE="" A_MINVAL="" A_MAXVAL="" A_MINTLRVAL="" A_MAXTLRVAL="" A_NTE="No applicable rules defined">
+        <check_log_details></check_log_details>
+    </check_log>
+</check>'
 ```
 
-
-> The above command returns JSON structured like this:
+> The above command returns `200 OK status` and a JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+    "content": "<check check_log_detail_count=\"0\">\n    <check_log A_CHKID=\"CHK9320\" A_CHKSTA=\"0\" A_CHKACT=\"-1\" A_CHKUSRID=\"mveevers\" A_CHKSTRTME=\"20180430150057327\" A_CHKENDTME=\"20180430150057327\" A_ORDID=\"O84395\" A_PLCID=\"O84395\" A_EXEID=\"\" A_INSID=\"RMV LN Equity-LT\" A_INSNAM=\"RIGHTMOVE PLC\" A_PARINSID=\"\" A_PARINSNAM=\"\" A_RULID=\"\" A_RULNAM=\"\" A_RULDSC=\"\" A_RULCATID=\"\" A_PSTTRD=\"N\" A_PREORD=\"N\" A_PREEXE=\"N\" A_PREPLC=\"Y\" A_OBJLISID=\"\" A_CCYCDE=\"\" A_MINVAL=\"\" A_MAXVAL=\"\" A_MINTLRVAL=\"\" A_MAXTLRVAL=\"\" A_NTE=\"No applicable rules defined\">\n        <check_log_details></check_log_details>\n    </check_log>\n</check>",
+    "createdAt": 1528923315784,
+    "updatedAt": 1528923315784,
+    "id": "5b2184b32b68440014bf661f"
+}
 ```
 
-This endpoint retrieves all xmlendpoint.
-
-### HTTP Request
-
-`GET https://cgb-pw.herokuapp.com/xmlendpoint`
-
-### Query Parameters
+`POST https://cgb-pw.herokuapp.com/xmlendpoint`
 
 Parameter | Default | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include xmlendpoint that have already been adopted.
+schemeless | `<xml></xml>` | Could be whatever xml valid data!
+
+
+This endpoint create XML data entries following next steps:
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+This endpoint use schemeless store to xml data, so you can send us xml with whatever structure!
 </aside>
 
-## Get a Specific Kitten
+
+## Get a Specific XML data
 
 ```shell
-curl "https://cgb-pw.herokuapp.com/xmlendpoint/2"
-  -H "Authorization: <TOKEN>"
+curl -X GET \
+  https://cgb-pw.herokuapp.com/xmlendpoint/5b2184b32b68440014bf661f \
+  -H 'Authorization: Bearer <TOKEN>'
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+    "content": "<check check_log_detail_count=\"0\">\n    <check_log A_CHKID=\"CHK9320\" A_CHKSTA=\"0\" A_CHKACT=\"-1\" A_CHKUSRID=\"mveevers\" A_CHKSTRTME=\"20180430150057327\" A_CHKENDTME=\"20180430150057327\" A_ORDID=\"O84395\" A_PLCID=\"O84395\" A_EXEID=\"\" A_INSID=\"RMV LN Equity-LT\" A_INSNAM=\"RIGHTMOVE PLC\" A_PARINSID=\"\" A_PARINSNAM=\"\" A_RULID=\"\" A_RULNAM=\"\" A_RULDSC=\"\" A_RULCATID=\"\" A_PSTTRD=\"N\" A_PREORD=\"N\" A_PREEXE=\"N\" A_PREPLC=\"Y\" A_OBJLISID=\"\" A_CCYCDE=\"\" A_MINVAL=\"\" A_MAXVAL=\"\" A_MINTLRVAL=\"\" A_MAXTLRVAL=\"\" A_NTE=\"No applicable rules defined\">\n        <check_log_details></check_log_details>\n    </check_log>\n</check>",
+    "createdAt": 1528923315784,
+    "updatedAt": 1528923315784,
+    "id": "5b2184b32b68440014bf661f"
 }
 ```
 
-This endpoint retrieves a specific kitten.
+Parameter | Default | Description
+--------- | ------- | -----------
+`<ID>` | `hashid` | The ID for XML data store on cgb XMLendpoint app!
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/xmlendpoint/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-
-```shell
-curl "https://cgb-pw.herokuapp.com/xmlendpoint/<ID>"
-  -X DELETE
-  -H "Authorization: <TOKEN>"
-```
-
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/xmlendpoint/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
+This endpoint retrieves a specific XML data.
