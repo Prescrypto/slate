@@ -1,7 +1,7 @@
 ---
 title: CGB XMLENDPOINT API Reference
 
-language_tabs: 
+language_tabs:
   - shell
 
 toc_footers:
@@ -15,15 +15,15 @@ search: true
 
 # Introduction
 
-Welcome to the CGB Xmlendpoint API! 
+Welcome to the CGB Xmlendpoint API!
 
-We have language bindings in Shell(Curl)! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in Shell(Curl)! You can view code examples on the right panel.
 
-Follow the next steps to know how to use our API. Let's doing!
+Let's get started! Follow the next steps to know how to use our API
 
 # Authentication
 
-> To authorize, use this code:
+> To get an auth token, use this code:
 
 ```shell
 curl -X POST \
@@ -43,28 +43,29 @@ curl -X POST \
 }
 ```
 
-> Make sure to replace `<TOKEN>` with your API key.
+> The value of key `"token"` is your API key.
 
-XMLEndpoint uses API keys to allow access to the API. 
+XMLEndpoint uses API keys to allow access to the API.
 
-XMLEndpoint expects for the API key to be included in all API requests to the server in a header that looks like the following: 
+XMLEndpoint expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
 `Authorization: Bearer <TOKEN>`
 
 <aside class="notice">
-You must replace <code><TOKEN></code> with your personal API key.
+You must replace <strong>TOKEN</strong> with your personal API key.
 </aside>
 
 # Users
 
-> To create new user, use this code:
+> To create a new user, use this code:
 
 ```shell
-curl -X POST https://cgb-pw.herokuapp.com/api/v1/user \
+curl -X POST \
+  https://cgb-pw.herokuapp.com/api/v1/user \
   -H 'Content-Type: application/json' \
   -d '{
       "email": "user@company.com",
-      "password": "adminpassword"
+      "password": "userpassword"
     }'
 ```
 
@@ -79,18 +80,18 @@ curl -X POST https://cgb-pw.herokuapp.com/api/v1/user \
 }
 ```
 
-Must have an user before authenticate, and use our API.
+A new user neds to be created prior to authentication and the use of our API.
 
-So following the next steps you will have an `user` and `password`
+Following the below steps to create a user with `email` and `password`
 
 Parameter | Description
 --------- | -----------
 email | String email of user
-password | String password keep in safe place 
+password | String password to be stored in a safe place
 
 
 
-# Xmlendpoint
+# XMLendpoint
 
 ## Create XML POST
 
@@ -117,21 +118,21 @@ curl -X POST \
 }
 ```
 
-`POST https://cgb-pw.herokuapp.com/api/v1/xmlendpoint`
+To create a XML post, follow the below steps
+
+Send payload with XML data, with the correct headers, see our example on the right panel.
 
 Parameter | Default | Description
 --------- | ------- | -----------
-schemeless | `<xml></xml>` | Could be whatever xml valid data!
+`<check></check>` | `<check></check>` | Accepted with any XML valid data!
 
-
-This endpoint create XML data entries following next steps:
 
 <aside class="success">
-This endpoint use schemeless store to xml data, so you can send us xml with whatever structure!
+This endpoint use schemeless structure to store to XML data, so you can send your XML data in any structure!
 </aside>
 
 
-## Get a Specific XML data
+## Retrieve a Specific XML data
 
 ```shell
 curl -X GET \
@@ -152,6 +153,6 @@ curl -X GET \
 
 Parameter | Default | Description
 --------- | ------- | -----------
-`<ID>` | `hashid` | The ID for XML data store on cgb XMLendpoint app!
+`<ID>` | `hashid` | This refers to eh ID of the XML data stored on our API server!
 
-This endpoint retrieves a specific XML data.
+This endpoint retrieves specific XML data.
