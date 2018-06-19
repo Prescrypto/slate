@@ -228,13 +228,13 @@
             <a href="#users" class="toc-h1 toc-link" data-title="users">Users</a>
           </li>
           <li>
-            <a href="#xmlendpoint" class="toc-h1 toc-link" data-title="xmlendpoint">Xmlendpoint</a>
+            <a href="#xmlendpoint" class="toc-h1 toc-link" data-title="xmlendpoint">XMLendpoint</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#create-xml-post" class="toc-h2 toc-link" data-title="create-xml-post">Create XML POST</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-xml-data" class="toc-h2 toc-link" data-title="get-a-specific-xml-data">Get a Specific XML data</a>
+                    <a href="#retrieve-a-specific-xml-data" class="toc-h2 toc-link" data-title="retrieve-a-specific-xml-data">Retrieve a Specific XML data</a>
                   </li>
               </ul>
           </li>
@@ -250,14 +250,14 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the CGB Xmlendpoint API! </p>
+<p>Welcome to the CGB Xmlendpoint API!</p>
 
-<p>We have language bindings in Shell(Curl)! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>We have language bindings in Shell(Curl)! You can view code examples on the right panel.</p>
 
-<p>Follow the next steps to know how to use our API. Let&#39;s doing!</p>
+<p>Let&#39;s get started! Follow the next steps to know how to use our API</p>
 <h1 id='authentication'>Authentication</h1>
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>To get an auth token, use this code:</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
   https://cgb-pw.herokuapp.com/api/v1/user/login <span class="se">\</span>
@@ -275,27 +275,28 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
-<p>Make sure to replace <code>&lt;TOKEN&gt;</code> with your API key.</p>
+<p>The value of key <code>&quot;token&quot;</code> is your API key.</p>
 </blockquote>
 
-<p>XMLEndpoint uses API keys to allow access to the API. </p>
+<p>XMLEndpoint uses API keys to allow access to the API.</p>
 
-<p>XMLEndpoint expects for the API key to be included in all API requests to the server in a header that looks like the following: </p>
+<p>XMLEndpoint expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
 
 <p><code>Authorization: Bearer &lt;TOKEN&gt;</code></p>
 
 <aside class="notice">
-You must replace <code><TOKEN></code> with your personal API key.
+You must replace <strong>TOKEN</strong> with your personal API key.
 </aside>
 <h1 id='users'>Users</h1>
 <blockquote>
-<p>To create new user, use this code:</p>
+<p>To create a new user, use this code:</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>curl -X POST https://cgb-pw.herokuapp.com/api/v1/user <span class="se">\</span>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  https://cgb-pw.herokuapp.com/api/v1/user <span class="se">\</span>
   -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
   -d <span class="s1">'{
       "email": "user@company.com",
-      "password": "adminpassword"
+      "password": "userpassword"
     }'</span>
 </code></pre>
 <blockquote>
@@ -308,9 +309,9 @@ You must replace <code><TOKEN></code> with your personal API key.
     </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user@company.com"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>Must have an user before authenticate, and use our API.</p>
+<p>A new user neds to be created prior to authentication and the use of our API.</p>
 
-<p>So following the next steps you will have an <code>user</code> and <code>password</code></p>
+<p>Following the below steps to create a user with <code>email</code> and <code>password</code></p>
 
 <table><thead>
 <tr>
@@ -324,10 +325,10 @@ You must replace <code><TOKEN></code> with your personal API key.
 </tr>
 <tr>
 <td>password</td>
-<td>String password keep in safe place</td>
+<td>String password to be stored in a safe place</td>
 </tr>
 </tbody></table>
-<h1 id='xmlendpoint'>Xmlendpoint</h1><h2 id='create-xml-post'>Create XML POST</h2><pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+<h1 id='xmlendpoint'>XMLendpoint</h1><h2 id='create-xml-post'>Create XML POST</h2><pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
   https://cgb-pw.herokuapp.com/api/v1/xmlendpoint <span class="se">\</span>
   -H <span class="s1">'Authorization: Bearer &lt;TOKEN&gt;'</span> <span class="se">\</span>
   -H <span class="s1">'Content-Type: text/xml'</span> <span class="se">\</span>
@@ -347,7 +348,9 @@ You must replace <code><TOKEN></code> with your personal API key.
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5b2184b32b68440014bf661f"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p><code>POST https://cgb-pw.herokuapp.com/api/v1/xmlendpoint</code></p>
+<p>To create a XML post, follow the below steps</p>
+
+<p>Send payload with XML data, with the correct headers, see our example on the right panel.</p>
 
 <table><thead>
 <tr>
@@ -357,18 +360,16 @@ You must replace <code><TOKEN></code> with your personal API key.
 </tr>
 </thead><tbody>
 <tr>
-<td>schemeless</td>
-<td><code>&lt;xml&gt;&lt;/xml&gt;</code></td>
-<td>Could be whatever xml valid data!</td>
+<td><code>&lt;check&gt;&lt;/check&gt;</code></td>
+<td><code>&lt;check&gt;&lt;/check&gt;</code></td>
+<td>Accepted with any XML valid data!</td>
 </tr>
 </tbody></table>
 
-<p>This endpoint create XML data entries following next steps:</p>
-
 <aside class="success">
-This endpoint use schemeless store to xml data, so you can send us xml with whatever structure!
+This endpoint use schemeless structure to store to XML data, so you can send your XML data in any structure!
 </aside>
-<h2 id='get-a-specific-xml-data'>Get a Specific XML data</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
+<h2 id='retrieve-a-specific-xml-data'>Retrieve a Specific XML data</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
   https://cgb-pw.herokuapp.com/api/v1/xmlendpoint/5b2184b32b68440014bf661f <span class="se">\</span>
   -H <span class="s1">'Authorization: Bearer &lt;TOKEN&gt;'</span>
 </code></pre>
@@ -392,14 +393,14 @@ This endpoint use schemeless store to xml data, so you can send us xml with what
 <tr>
 <td><code>&lt;ID&gt;</code></td>
 <td><code>hashid</code></td>
-<td>The ID for XML data store on cgb XMLendpoint app!</td>
+<td>This refers to eh ID of the XML data stored on our API server!</td>
 </tr>
 </tbody></table>
 
-<p>This endpoint retrieves a specific XML data.</p>
+<p>This endpoint retrieves specific XML data.</p>
 <h1 id='errors'>Errors</h1>
 <aside class="notice">
-This is a list of common errors that can be reach by our server!
+List of common errors codes that can be reached by our server
 </aside>
 
 <p>The XML Endpoint API uses the following error codes:</p>
@@ -432,15 +433,15 @@ This is a list of common errors that can be reach by our server!
 </tr>
 <tr>
 <td>429</td>
-<td>Too Many Requests -- Exceeds Limit requests!</td>
+<td>Too Many Requests -- Exceeds limit requests!</td>
 </tr>
 <tr>
 <td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
+<td>Internal Server Error -- Try again later.</td>
 </tr>
 <tr>
 <td>503</td>
-<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
+<td>Service Unavailable -- Please try again later.</td>
 </tr>
 </tbody></table>
 
