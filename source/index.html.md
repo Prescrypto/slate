@@ -65,7 +65,8 @@ curl -X POST \
   -H 'Content-Type: application/json' \
   -d '{
       "email": "user@company.com",
-      "password": "userpassword"
+      "password": "userpassword",
+      "violationEmail": "user@company.com"
     }'
 ```
 
@@ -76,7 +77,8 @@ curl -X POST \
     "createdAt": 1528922588700,
     "updatedAt": 1528922588700,
     "id": "5b2181dc2b68440014bf661e",
-    "email": "user@company.com"
+    "email": "user@company.com",
+    "violationEmail": "user@company.com"
 }
 ```
 
@@ -88,6 +90,7 @@ Parameter | Description
 --------- | -----------
 email | String email of user
 password | String password to be stored in a safe place
+violationEmail | String email of the recipient for the violation notifications 
 
 
 
@@ -100,23 +103,71 @@ curl -X POST \
   https://cgb-pw.herokuapp.com/api/v1/xmlendpoint \
   -H 'Authorization: Bearer <TOKEN>' \
   -H 'Content-Type: text/xml' \
-  -d '<check check_log_detail_count="0">
-    <check_log A_CHKID="CHK9320" A_CHKSTA="0" A_CHKACT="-1" A_CHKUSRID="mveevers" A_CHKSTRTME="20180430150057327" A_CHKENDTME="20180430150057327" A_ORDID="O84395" A_PLCID="O84395" A_EXEID="" A_INSID="RMV LN Equity-LT" A_INSNAM="RIGHTMOVE PLC" A_PARINSID="" A_PARINSNAM="" A_RULID="" A_RULNAM="" A_RULDSC="" A_RULCATID="" A_PSTTRD="N" A_PREORD="N" A_PREEXE="N" A_PREPLC="Y" A_OBJLISID="" A_CCYCDE="" A_MINVAL="" A_MAXVAL="" A_MINTLRVAL="" A_MAXTLRVAL="" A_NTE="No applicable rules defined">
-        <check_log_details></check_log_details>
-    </check_log>
-</check>'
+  -d '<Check ClientID="CG" ClientName="CG Blockchain" Count="2"><CheckResult UserID="anuli" OrderID="123" InstrumentId="11914" Account="UK EQUITY" Instrument="HSBC 4 3/4 03/24/46" AccountId="A000001" RuleId="R308" Reason="Incorrect rule coding"/></Check>'
 ```
 
-> The above command returns `200 OK status` and a JSON structured like this:
+> **Success Response:**
+
+> On sucess The above command returns `200 OK status` and a JSON structured like this:
 
 ```json
 {
-    "content": "<check check_log_detail_count=\"0\">\n    <check_log A_CHKID=\"CHK9320\" A_CHKSTA=\"0\" A_CHKACT=\"-1\" A_CHKUSRID=\"mveevers\" A_CHKSTRTME=\"20180430150057327\" A_CHKENDTME=\"20180430150057327\" A_ORDID=\"O84395\" A_PLCID=\"O84395\" A_EXEID=\"\" A_INSID=\"RMV LN Equity-LT\" A_INSNAM=\"RIGHTMOVE PLC\" A_PARINSID=\"\" A_PARINSNAM=\"\" A_RULID=\"\" A_RULNAM=\"\" A_RULDSC=\"\" A_RULCATID=\"\" A_PSTTRD=\"N\" A_PREORD=\"N\" A_PREEXE=\"N\" A_PREPLC=\"Y\" A_OBJLISID=\"\" A_CCYCDE=\"\" A_MINVAL=\"\" A_MAXVAL=\"\" A_MINTLRVAL=\"\" A_MAXTLRVAL=\"\" A_NTE=\"No applicable rules defined\">\n        <check_log_details></check_log_details>\n    </check_log>\n</check>",
-    "createdAt": 1528923315784,
-    "updatedAt": 1528923315784,
-    "id": "5b2184b32b68440014bf661f"
+    "response": "success on post"
 }
 ```
+
+> **Error Response:**
+>
+> On error The above command returns `200 OK status` and the following posible error responses:
+
+```json
+{
+    "response": "No response or error on post"
+}
+```
+
+>  If there was an error at compliance guard endpoint
+
+```json
+{
+    "response": "error on post"
+}
+```
+
+>  If there is an unknown error
+
+```json
+{
+    "response": "Authorization reloaded please try again"
+}
+```
+
+>  If somehow the Token has failed to be loaded and we need to get a new one
+
+```json
+{
+    "response":"error on db insert"
+}
+```
+
+> When there's an error on the db insert
+
+```xml
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CG Blockchain 403</title>
+        <link href="/public/app.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="content">
+        Unauthorised access
+    </div>
+    </body>
+</html>
+```
+
+>  If there was an error at compliance guard and the response is not in JSON format we'll get a response like the above.
 
 To create a XML post, follow the below steps
 
@@ -126,10 +177,177 @@ Parameter | Default | Description
 --------- | ------- | -----------
 `<check></check>` | `<check></check>` | Accepted with any XML valid data!
 
-
 <aside class="success">
 This endpoint use schemeless structure to store to XML data, so you can send your XML data in any structure!
 </aside>
+
+**Notes:**
+
+To check if the XML file has been correctly posted you can login to compliance guard on the link:
+	[https://cg-dev-1.app.cgblockchain.com](https://cg-dev-1.app.cgblockchain.com)
+then on the top menu select the left dropdown option and click on research & documentation
+this will load all the documents posted in datetime order
+
+or we can make a GET to the compliance guard endpoint including the entity ID from the files we are trying to retrieve for example:
+
+```
+9c8e2eea-4003-4e8e-b47b-7fcfbc1e9fd8
+```
+
+with this entity ID we can make the following GET:
+
+```json
+curl -X GET \
+  https://cg-dev-1.app.cgblockchain.com/api/v1/entries/9c8e2eea-4003-4e8e-b47b-7fcfbc1e9fd8 \
+  -H 'Authorization: Bearer <TOKEN>' \
+  -H 'Content-Type: application/json' \
+```
+
+It will return a JSON array with the xml information like the following:
+
+```json
+"status": "success",
+    "data": {
+        "entries": [
+            {
+                "_ts": "2018-06-28T19:51:52.102Z",
+                "revision": 1,
+                "chainId": null,
+                "entityId": "9c8e2eea-4003-4e8e-b47b-7fcfbc1e9fd8",
+                "hash": "0x4e1f4787bf20031588c26f3e417d8724257a90be1a942c4fdb2f9d3c9642a5e3",
+                "userId": "76ac40e6-b47f-4f42-ba2b-44bc5eaea651",
+                "links": [],
+                "id": "40a21ce6-53e3-49a6-9904-fc60819949ae",
+                "user": "76ac40e6-b47f-4f42-ba2b-44bc5eaea651",
+                "tx": {
+                    "blockHash": "0x1e69e69699147bc70598dacdda610fdc3e4bdd62ed9096fd485509c94f132207",
+                    "blockNumber": "0x95",
+                    "condition": null,
+                    "creates": "0x406a317ef14944e119c35390101853eb61001632",
+                    "from": "0x1eed8b83260bc5076b79f45621e650af4dd73e3b",
+                    "gas": "0xe57e0",
+                    "gasPrice": "0x0",
+                    "hash": "0x4e1f4787bf20031588c26f3e417d8724257a90be1a942c4fdb2f9d3c9642a5e3",
+                    "input": "0x38363834333338636335363365373437643135653331333334623964336339323530373062383764336432396261626432313334363336633563643034653131",
+                    "networkId": 8995,
+                    "nonce": "0x1e1",
+                    "publicKey": "0x6325b037a4cef9c2a63755f4bb796da3fb9ac816c1cdba4f9d471cdad5566313d7e78767cb402f182cd6ba3ac8ea8bd3da35d1b86f2c5e2a71062930bac358dc",
+                    "r": "0x10cf638a43f5e212d6ae9c178f122c31a9f48766dd84822a6a0f1d3a5d48cc25",
+                    "raw": "0xf8918201e180830e57e08080b84038363834333338636335363365373437643135653331333334623964336339323530373062383764336432396261626432313334363336633563643034653131824669a010cf638a43f5e212d6ae9c178f122c31a9f48766dd84822a6a0f1d3a5d48cc25a03c47b9bdd05edd0e961c86119a0fa84da2bf0e806b0b361454a00dadce225809",
+                    "s": "0x3c47b9bdd05edd0e961c86119a0fa84da2bf0e806b0b361454a00dadce225809",
+                    "standardV": "0x0",
+                    "to": null,
+                    "transactionIndex": "0x3",
+                    "v": "0x4669",
+                    "value": "0x0"
+                },
+                "values": {
+                    "file_1": {
+                        "name": "file.xml",
+                        "type": "application/xml",
+                        "size": 187,
+                        "lastModifiedDate": "2018-06-28T19:51:52+00:00",
+                        "digest": {
+                            "type": "Buffer",
+                            "data": [
+                                255,
+                                93,
+                                133,
+                                125,
+                                111,
+                                102,
+                                136,
+                                157,
+                                133,
+                                251,
+                                189,
+                                85,
+                                94,
+                                73,
+                                205,
+                                216,
+                                84,
+                                121,
+                                157,
+                                187,
+                                33,
+                                215,
+                                87,
+                                62,
+                                43,
+                                75,
+                                137,
+                                41,
+                                187,
+                                247,
+                                191,
+                                214
+                            ]
+                        },
+                        "link": "0xd4178107bf1e10602e70116d6a8fe0878995df42c0d5f32d4bcd02f94a748fbe"
+                    },
+                    "description": "file.xml Posted by user2@test.com time: Thu Jun 28 2018 19:51:51 GMT+0000 (UTC)",
+                    "_ts": "Jun 28, 2018 3:51 PM"
+                }
+            },
+```
+
+If the XML file has a *CheckOverride* TAG on it's information then it will search for the previous failure and send an email to the violation email address from the user, this email will contain both the Check Override information and the Check Entity information, it will also include a link to the previous failure XML file 
+on Compliance Guard if there was one.
+
+This is an example of the email notification:
+
+Dear Recipient Name, This is a Violation CheckOverride Notification Date: Tue Jun 26 2018 22:16:48 GMT+0000 (UTC)
+
+
+**CheckOverride information:**
+
+UserID	anuli
+OrderID	1
+InstrumentId	11914
+Account	UK EQUITY
+Instrument	HSBC 4 3/4 03/24/46
+AccountId	A000001
+RuleId	R308
+Reason	Incorrect rule coding
+
+CheckEntity information:
+AccountID	A000001
+CustodianID	K5344
+Condition	Market
+CreateCashOffset	Yes
+Broker	CS
+EntityType	Order
+ExposureValue	1165440.00
+FxCurrencyType	NotFx
+IsSynthetic	No
+InstrumentId	10077
+InstrType	Equity
+IsAmend	Yes
+IsShort	No
+LogResults	Yes
+Manager	dlyons
+OrderID	1
+PositionEffect	Open
+Price	97.12
+Quantity	12000
+SettleCcy	GBP
+SettleDate	20180525000000000
+TIF	WeekOnly
+TIFDate	20180529000000000
+TradeDate	20180522000000000
+Side	Buy
+UnitType	Quantity
+UniqueId	O7165
+UserID	rpicciau
+Value	1165440.00
+ValidationType	Compliance
+
+Link to File: https://cg-dev-1.app.cgblockchain.com/app/research_and_documentation/bf1b239d-bcff-4cf3-a66f-e7843c647dfb
+
+Regards
+
+
 
 
 ## Retrieve a Specific XML data
@@ -144,7 +362,7 @@ curl -X GET \
 
 ```json
 {
-    "content": "<check check_log_detail_count=\"0\">\n    <check_log A_CHKID=\"CHK9320\" A_CHKSTA=\"0\" A_CHKACT=\"-1\" A_CHKUSRID=\"mveevers\" A_CHKSTRTME=\"20180430150057327\" A_CHKENDTME=\"20180430150057327\" A_ORDID=\"O84395\" A_PLCID=\"O84395\" A_EXEID=\"\" A_INSID=\"RMV LN Equity-LT\" A_INSNAM=\"RIGHTMOVE PLC\" A_PARINSID=\"\" A_PARINSNAM=\"\" A_RULID=\"\" A_RULNAM=\"\" A_RULDSC=\"\" A_RULCATID=\"\" A_PSTTRD=\"N\" A_PREORD=\"N\" A_PREEXE=\"N\" A_PREPLC=\"Y\" A_OBJLISID=\"\" A_CCYCDE=\"\" A_MINVAL=\"\" A_MAXVAL=\"\" A_MINTLRVAL=\"\" A_MAXTLRVAL=\"\" A_NTE=\"No applicable rules defined\">\n        <check_log_details></check_log_details>\n    </check_log>\n</check>",
+    "content": '<Check ClientID="CG" ClientName="CG Blockchain" Count="2"><CheckResult UserID="anuli" OrderID="123" InstrumentId="11914" Account="UK EQUITY" Instrument="HSBC 4 3/4 03/24/46" AccountId="A000001" RuleId="R308" Reason="Incorrect rule coding"/></Check>',
     "createdAt": 1528923315784,
     "updatedAt": 1528923315784,
     "id": "5b2184b32b68440014bf661f"
