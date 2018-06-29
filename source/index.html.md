@@ -297,55 +297,48 @@ on Compliance Guard if there was one.
 
 This is an example of the email notification:
 
-Dear Recipient Name, This is a Violation CheckOverride Notification Date: Tue Jun 26 2018 22:16:48 GMT+0000 (UTC)
-
+**Dear Recipient Name, This is a Violation CheckOverride Notification Date: Tue Jun 26 2018 22:16:48 GMT+0000 (UTC)**
 
 **CheckOverride information:**
 
-UserID	anuli
-OrderID	1
-InstrumentId	11914
-Account	UK EQUITY
-Instrument	HSBC 4 3/4 03/24/46
-AccountId	A000001
-RuleId	R308
-Reason	Incorrect rule coding
+| Name         | Value                 |
+| ------------ | --------------------- |
+| UserID       | anuli                 |
+| OrderID      | 1                     |
+| InstrumentId | 11914                 |
+| Account      | UK EQUITY             |
+| Instrument   | HSBC 4 3/4 03/24/46   |
+| AccountId    | A000001               |
+| RuleId       | R308                  |
+| Reason       | Incorrect rule coding |
 
-CheckEntity information:
-AccountID	A000001
-CustodianID	K5344
-Condition	Market
-CreateCashOffset	Yes
-Broker	CS
-EntityType	Order
-ExposureValue	1165440.00
-FxCurrencyType	NotFx
-IsSynthetic	No
-InstrumentId	10077
-InstrType	Equity
-IsAmend	Yes
-IsShort	No
-LogResults	Yes
-Manager	dlyons
-OrderID	1
-PositionEffect	Open
-Price	97.12
-Quantity	12000
-SettleCcy	GBP
-SettleDate	20180525000000000
-TIF	WeekOnly
-TIFDate	20180529000000000
-TradeDate	20180522000000000
-Side	Buy
-UnitType	Quantity
-UniqueId	O7165
-UserID	rpicciau
-Value	1165440.00
-ValidationType	Compliance
+**CheckEntity information:**
 
-Link to File: https://cg-dev-1.app.cgblockchain.com/app/research_and_documentation/bf1b239d-bcff-4cf3-a66f-e7843c647dfb
+| Name             | Value      |
+| ---------------- | ---------- |
+| AccountID        | A000001    |
+| CustodianID      | K5344      |
+| Condition        | Market     |
+| CreateCashOffset | Yes        |
+| Broker           | CS         |
+| EntityType       | Order      |
+| ExposureValue    | 1165440.00 |
+| FxCurrencyType   | NotFx      |
+| IsSynthetic      | No         |
+| InstrumentId     | 10077      |
+| InstrType        | Equity     |
+| IsAmend          | Yes        |
+| IsShort          | No         |
+| LogResults       | Yes        |
+| Manager          | dlyons     |
+| OrderID          | 1          |
+| UserID           | rpicciau   |
+| Value            | 1165440.00 |
+| ValidationType   | Compliance |
 
-Regards
+**Link to File: https://cg-dev-1.app.cgblockchain.com/app/research_and_documentation/bf1b239d-bcff-4cf3-a66f-e7843c647dfb**
+
+**Regards**
 
 
 
