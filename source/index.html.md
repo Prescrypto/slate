@@ -181,29 +181,33 @@ Parameter | Default | Description
 This endpoint use schemeless structure to store to XML data, so you can send your XML data in any structure!
 </aside>
 
-**Notes:**
+## Check the Posts
 
 To check if the XML file has been correctly posted you can login to compliance guard on the link:
 	[https://cg-dev-1.app.cgblockchain.com](https://cg-dev-1.app.cgblockchain.com)
 then on the top menu select the left dropdown option and click on research & documentation
-this will load all the documents posted in datetime order
+this will load all the documents posted in datetime order or we can make a GET to the compliance guard endpoint including the entity ID from the files we are trying to retrieve for example:
 
-or we can make a GET to the compliance guard endpoint including the entity ID from the files we are trying to retrieve for example:
+> To get the XML information.
 
-```
-9c8e2eea-4003-4e8e-b47b-7fcfbc1e9fd8
-```
-
-with this entity ID we can make the following GET:
-
-```json
+```shell
 curl -X GET \
   https://cg-dev-1.app.cgblockchain.com/api/v1/entries/9c8e2eea-4003-4e8e-b47b-7fcfbc1e9fd8 \
   -H 'Authorization: Bearer <TOKEN>' \
   -H 'Content-Type: application/json' \
 ```
 
-It will return a JSON array with the xml information like the following:
+Send payload with XML data, with the correct headers, see our example on the right panel.
+
+| Parameter       | Default         | Description           |
+| --------------- | --------------- | --------------------- |
+| ```<EntryID>``` | ```<EntryID>``` | Entry Id of the file. |
+
+
+
+
+
+> It will return a JSON array with the xml information like the following:
 
 ```json
 "status": "success",
@@ -295,7 +299,7 @@ It will return a JSON array with the xml information like the following:
 If the XML file has a *CheckOverride* TAG on it's information then it will search for the previous failure and send an email to the violation email address from the user, this email will contain both the Check Override information and the Check Entity information, it will also include a link to the previous failure XML file 
 on Compliance Guard if there was one.
 
-This is an example of the email notification:
+## Example Notification
 
 **Dear Recipient Name, This is a Violation CheckOverride Notification Date: Tue Jun 26 2018 22:16:48 GMT+0000 (UTC)**
 
@@ -336,7 +340,7 @@ This is an example of the email notification:
 | Value            | 1165440.00 |
 | ValidationType   | Compliance |
 
-**Link to File: https://cg-dev-1.app.cgblockchain.com/app/research_and_documentation/bf1b239d-bcff-4cf3-a66f-e7843c647dfb**
+**Link to File: [https://cg-dev-1.app.cgblockchain.com/app/research_and_documentation/bf1b239d-bcff-4cf3-a66f-e7843c647dfb](https://cg-dev-1.app.cgblockchain.com/app/research_and_documentation/bf1b239d-bcff-4cf3-a66f-e7843c647dfb)**
 
 **Regards**
 
