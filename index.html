@@ -427,11 +427,6 @@ You must replace <strong>TOKEN</strong> with your personal API key.
 This endpoint use schemeless structure to store to XML data, so you can send your XML data in any structure!
 </aside>
 <h2 id='check-the-posts'>Check the Posts</h2>
-<p>To check if the XML file has been correctly posted you can login to compliance guard on the link:
-    <a href="https://cg-dev-1.app.cgblockchain.com">https://cg-dev-1.app.cgblockchain.com</a>
-then on the top menu select the left dropdown option and click on research &amp; documentation
-this will load all the documents posted in datetime order or we can make a GET to the compliance guard endpoint including the entity ID from the files we are trying to retrieve for example:</p>
-
 <blockquote>
 <p>To get the XML information.</p>
 </blockquote>
@@ -440,22 +435,6 @@ this will load all the documents posted in datetime order or we can make a GET t
   -H <span class="s1">'Authorization: Bearer &lt;TOKEN&gt;'</span> <span class="se">\</span>
   -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
 </code></pre>
-<p>Send payload with XML data, with the correct headers, see our example on the right panel.</p>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>&lt;EntryID&gt;</code></td>
-<td><code>&lt;EntryID&gt;</code></td>
-<td>Entry Id of the file.</td>
-</tr>
-</tbody></table>
-
 <blockquote>
 <p>It will return a JSON array with the xml information like the following:</p>
 </blockquote>
@@ -544,8 +523,30 @@ this will load all the documents posted in datetime order or we can make a GET t
                 </span><span class="p">}</span><span class="w">
             </span><span class="p">},</span><span class="w">
 </span></code></pre>
-<p>If the XML file has a <em>CheckOverride</em> TAG on it&#39;s information then it will search for the previous failure and send an email to the violation email address from the user, this email will contain both the Check Override information and the Check Entity information, it will also include a link to the previous failure XML file 
-on Compliance Guard if there was one.</p>
+<p>To check if the XML file has been correctly posted you can login to compliance guard on the link:
+    <a href="https://cg-dev-1.app.cgblockchain.com">https://cg-dev-1.app.cgblockchain.com</a>
+then on the top menu select the left dropdown option and click on research &amp; documentation
+this will load all the documents posted in datetime order or we can make a GET to the compliance guard endpoint including the entity ID from the files we are trying to retrieve for example:</p>
+
+<p>Send payload with XML data, with the correct headers, see our example on the right panel.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>&lt;EntryID&gt;</code></td>
+<td><code>&lt;EntryID&gt;</code></td>
+<td>Entry Id of the file.</td>
+</tr>
+</tbody></table>
+
+<p>If the XML file has a <em>CheckOverride</em> TAG on it&#39;s information then it will search for the previous failure and send an email to the violation email address from the user, this email will contain both the Check Override information and the Check Entity information, it will also include a link to the previous failure XML file </p>
+
+<p>on Compliance Guard if there was one.</p>
 <h2 id='example-notification'>Example Notification</h2>
 <p><strong>Dear Recipient Name, This is a Violation CheckOverride Notification Date: Tue Jun 26 2018 22:16:48 GMT+0000 (UTC)</strong></p>
 
