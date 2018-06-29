@@ -234,6 +234,12 @@
                     <a href="#create-xml-post" class="toc-h2 toc-link" data-title="create-xml-post">Create XML POST</a>
                   </li>
                   <li>
+                    <a href="#check-the-posts" class="toc-h2 toc-link" data-title="check-the-posts">Check the Posts</a>
+                  </li>
+                  <li>
+                    <a href="#example-notification" class="toc-h2 toc-link" data-title="example-notification">Example Notification</a>
+                  </li>
+                  <li>
                     <a href="#retrieve-a-specific-xml-data" class="toc-h2 toc-link" data-title="retrieve-a-specific-xml-data">Retrieve a Specific XML data</a>
                   </li>
               </ul>
@@ -420,24 +426,39 @@ You must replace <strong>TOKEN</strong> with your personal API key.
 <aside class="success">
 This endpoint use schemeless structure to store to XML data, so you can send your XML data in any structure!
 </aside>
-
-<p><strong>Notes:</strong></p>
-
+<h2 id='check-the-posts'>Check the Posts</h2>
 <p>To check if the XML file has been correctly posted you can login to compliance guard on the link:
     <a href="https://cg-dev-1.app.cgblockchain.com">https://cg-dev-1.app.cgblockchain.com</a>
 then on the top menu select the left dropdown option and click on research &amp; documentation
-this will load all the documents posted in datetime order</p>
+this will load all the documents posted in datetime order or we can make a GET to the compliance guard endpoint including the entity ID from the files we are trying to retrieve for example:</p>
 
-<p>or we can make a GET to the compliance guard endpoint including the entity ID from the files we are trying to retrieve for example:</p>
-<pre class="highlight plaintext"><code>9c8e2eea-4003-4e8e-b47b-7fcfbc1e9fd8
+<blockquote>
+<p>To get the XML information.</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
+  https://cg-dev-1.app.cgblockchain.com/api/v1/entries/9c8e2eea-4003-4e8e-b47b-7fcfbc1e9fd8 <span class="se">\</span>
+  -H <span class="s1">'Authorization: Bearer &lt;TOKEN&gt;'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
 </code></pre>
-<p>with this entity ID we can make the following GET:</p>
-<pre class="highlight json tab-json"><code><span class="err">curl</span><span class="w"> </span><span class="err">-X</span><span class="w"> </span><span class="err">GET</span><span class="w"> </span><span class="err">\</span><span class="w">
-  </span><span class="err">https</span><span class="p">:</span><span class="err">//cg-dev</span><span class="mi">-1</span><span class="err">.app.cgblockchain.com/api/v</span><span class="mi">1</span><span class="err">/entries/</span><span class="mi">9</span><span class="err">c</span><span class="mi">8</span><span class="err">e</span><span class="mi">2</span><span class="err">eea</span><span class="mi">-4003-4</span><span class="err">e</span><span class="mi">8</span><span class="err">e-b</span><span class="mi">47</span><span class="err">b</span><span class="mi">-7</span><span class="err">fcfbc</span><span class="mi">1</span><span class="err">e</span><span class="mi">9</span><span class="err">fd</span><span class="mi">8</span><span class="w"> </span><span class="err">\</span><span class="w">
-  </span><span class="err">-H</span><span class="w"> </span><span class="err">'Authorization</span><span class="p">:</span><span class="w"> </span><span class="err">Bearer</span><span class="w"> </span><span class="err">&lt;TOKEN&gt;'</span><span class="w"> </span><span class="err">\</span><span class="w">
-  </span><span class="err">-H</span><span class="w"> </span><span class="err">'Content-Type</span><span class="p">:</span><span class="w"> </span><span class="err">application/json'</span><span class="w"> </span><span class="err">\</span><span class="w">
-</span></code></pre>
+<p>Send payload with XML data, with the correct headers, see our example on the right panel.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>&lt;EntryID&gt;</code></td>
+<td><code>&lt;EntryID&gt;</code></td>
+<td>Entry Id of the file.</td>
+</tr>
+</tbody></table>
+
+<blockquote>
 <p>It will return a JSON array with the xml information like the following:</p>
+</blockquote>
 <pre class="highlight json tab-json"><code><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"entries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
@@ -525,9 +546,7 @@ this will load all the documents posted in datetime order</p>
 </span></code></pre>
 <p>If the XML file has a <em>CheckOverride</em> TAG on it&#39;s information then it will search for the previous failure and send an email to the violation email address from the user, this email will contain both the Check Override information and the Check Entity information, it will also include a link to the previous failure XML file 
 on Compliance Guard if there was one.</p>
-
-<p>This is an example of the email notification:</p>
-
+<h2 id='example-notification'>Example Notification</h2>
 <p><strong>Dear Recipient Name, This is a Violation CheckOverride Notification Date: Tue Jun 26 2018 22:16:48 GMT+0000 (UTC)</strong></p>
 
 <p><strong>CheckOverride information:</strong></p>
@@ -658,7 +677,7 @@ on Compliance Guard if there was one.</p>
 </tr>
 </tbody></table>
 
-<p><strong>Link to File: https://cg-dev-1.app.cgblockchain.com/app/research_and_documentation/bf1b239d-bcff-4cf3-a66f-e7843c647dfb</strong></p>
+<p><strong>Link to File: <a href="https://cg-dev-1.app.cgblockchain.com/app/research_and_documentation/bf1b239d-bcff-4cf3-a66f-e7843c647dfb">https://cg-dev-1.app.cgblockchain.com/app/research_and_documentation/bf1b239d-bcff-4cf3-a66f-e7843c647dfb</a></strong></p>
 
 <p><strong>Regards</strong></p>
 <h2 id='retrieve-a-specific-xml-data'>Retrieve a Specific XML data</h2><pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
