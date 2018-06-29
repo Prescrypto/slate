@@ -183,11 +183,6 @@ This endpoint use schemeless structure to store to XML data, so you can send you
 
 ## Check the Posts
 
-To check if the XML file has been correctly posted you can login to compliance guard on the link:
-	[https://cg-dev-1.app.cgblockchain.com](https://cg-dev-1.app.cgblockchain.com)
-then on the top menu select the left dropdown option and click on research & documentation
-this will load all the documents posted in datetime order or we can make a GET to the compliance guard endpoint including the entity ID from the files we are trying to retrieve for example:
-
 > To get the XML information.
 
 ```shell
@@ -196,16 +191,6 @@ curl -X GET \
   -H 'Authorization: Bearer <TOKEN>' \
   -H 'Content-Type: application/json' \
 ```
-
-Send payload with XML data, with the correct headers, see our example on the right panel.
-
-| Parameter       | Default         | Description           |
-| --------------- | --------------- | --------------------- |
-| ```<EntryID>``` | ```<EntryID>``` | Entry Id of the file. |
-
-
-
-
 
 > It will return a JSON array with the xml information like the following:
 
@@ -296,7 +281,19 @@ Send payload with XML data, with the correct headers, see our example on the rig
             },
 ```
 
+To check if the XML file has been correctly posted you can login to compliance guard on the link:
+	[https://cg-dev-1.app.cgblockchain.com](https://cg-dev-1.app.cgblockchain.com)
+then on the top menu select the left dropdown option and click on research & documentation
+this will load all the documents posted in datetime order or we can make a GET to the compliance guard endpoint including the entity ID from the files we are trying to retrieve for example:
+
+Send payload with XML data, with the correct headers, see our example on the right panel.
+
+| Parameter       | Default         | Description           |
+| --------------- | --------------- | --------------------- |
+| ```<EntryID>``` | ```<EntryID>``` | Entry Id of the file. |
+
 If the XML file has a *CheckOverride* TAG on it's information then it will search for the previous failure and send an email to the violation email address from the user, this email will contain both the Check Override information and the Check Entity information, it will also include a link to the previous failure XML file 
+
 on Compliance Guard if there was one.
 
 ## Example Notification
