@@ -39,7 +39,7 @@ curl -X POST \
 
 ```json
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkQXQiOjE1Mjg5MDUyNzM1MjMsInVwZGF0ZWRBdCI6MTUyODkwNTI3MzUyMywiaWQiOiI1YjIxM2UzOTNmNTljYTAwMTRiZmFmNzMiLCJlbWFpbCI6Implc3VzQHByZXNjcnlwdG8uY29tIiwiaWF0IjoxNTI4OTIyODM3LCJleHAiOjE1Mjg5MjY0Mzd9.CsSQDQonYQqphi9BNKaWDt6lXJ5-vSa09B5MRBwIV-o"
+    "token": "<TOKEN>"
 }
 ```
 
