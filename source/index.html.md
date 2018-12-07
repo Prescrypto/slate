@@ -114,46 +114,55 @@ Parameter | Description
 email | Valid Email (String)
 password | Keep safe your password (String)
 
+<aside class="notice">
+Notice that a token only will send to valid emails
+</aside>
 
-# Kittens
 
-## Users
+# Documents
+
+## Document with Github URL or Overleaf URL
 
 ```python
-import WPCI
+import requests
 
-api = WPCI.authorize('<TOKEN>')
-api.kittens.get()
+url = "http://api.wpci.io/api/v1/renderrepohash"
+
+payload = {
+    "remote_url":"https://git.overleaf.com/22178387mvzzshhfsypt"
+    }
+headers = {
+    'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
+    'Content-Type': "application/json"
+    }
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.text)
 ```
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: <TOKEN>"
+curl -X POST \
+  http://api.wpci.io/api/v1/renderrepohash \
+  -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
+  -H 'Content-Type: application/json' \
+  -d '{"remote_url":"https://git.overleaf.com/22178387mvzzshhfsypt"}'
 ```
 
 
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{"response": "done"}
 ```
 
-This endpoint retrieves all kittens.
+This endpoint will create a url for share documents wherever you want, just need the following
+
+Parameter | Description
+--------- | -----------
+token | Bearer <Token> setup on headers
+remote_url | The url for github or Overleaf document (String)
+
 
 ### HTTP Request
 
