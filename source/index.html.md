@@ -7,7 +7,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
 
 toc_footers:
   - <a href='https://api.wpci.io/api/v1/signin'>Sign Up for a Developer Key</a>
-  - <a href='https://www.prescrypto.com'>Documentation Powered by Prescrypto</a>
+  - <a href='https://www.prescrypto.com'>WPCI is Powered by Prescrypto</a>
 
 includes:
   - errors
@@ -29,7 +29,7 @@ You can view code examples in the dark area to the right, and you can switch the
 ```python
 import requests
 
-url = "http://api.wpci.io/api/v1/auth/login"
+url = "https://api.wpci.io/api/v1/login"
 
 payload = {
     "username": "youruser@yourcompany.com",
@@ -40,14 +40,14 @@ headers = {
     'Content-Type': "application/json",
 }
 
-response = requests.request("POST", url, json=payload, headers=headers)
+response = requests.post(url, json=payload, headers=headers)
 
 print(response.text)
 ```
 
 ```shell
 curl -X POST \
-  http://latex-ci.herokuapp.com/api/v1/auth/login \
+  https://api.wpci.io/api/v1/login \
   -H 'Authorization: Bearer <TOKEN>' \
   -d '{"username":"youruser@yourcompany.com","password":"password"}'
 ```
@@ -59,37 +59,65 @@ curl -X POST \
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc"
+}
 ```
 
-WPCI uses API keys to allow access to the API. You can register a new WPCI API key at our [developer portal](http://example.com/developers).
+WPCI uses API keys to allow access to the API. You can register a new WPCI API key at our [developer portal](https://).
 
 WPCI expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: <TOKEN>`
+`Authorization: Bearer <TOKEN>`
 
 <aside class="notice">
-You must replace <code><TOKEN></code> with your personal API key.
+You must replace <code><span><</span>TOKEN></code> with your personal API Token key.
 </aside>
+
+## Create user account
+
+```shell
+curl -X POST \
+  https://api.wpci.io/api/v1/signin \
+  -d '{"email":"youruser@yourcompany.com","password":"password"}'
+```
+
+```python
+import requests
+
+url = "https://api.wpci.io/api/v1/signin"
+
+payload = {
+    "email": "youruser@yourcompany.com",
+    "password": "password"
+}
+headers = {
+    'Content-Type': "application/json"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{"response": "user created successfully"}
+```
+
+To get an access token you must have your user and password for WPCI but if you don't have any you can create a new account following next steps.
+
+
+Parameter | Description
+--------- | -----------
+email | Valid Email (String)
+password | Keep safe your password (String)
+
 
 # Kittens
 
-## Get All Kittens
+## Users
 
 ```python
 import WPCI
