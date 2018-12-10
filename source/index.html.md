@@ -6,7 +6,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - python
 
 toc_footers:
-  - <a href='https://api.wpci.io/api/v1/signin'>Sign Up for a Developer Key</a>
+  - <a href='https://api.wpci.io/api/v1/register'>Sign Up for a Developer Key</a>
   - <a href='https://www.prescrypto.com'>WPCI is Powered by Prescrypto</a>
 
 includes:
@@ -180,7 +180,7 @@ doc_id | This is the ID of the document, provided in your dashboard
 
 
 
-## Get the Document
+## Get the PDF
 
 This endpoint will respond with the document as a base 64 PDF file, to get it you need to include the corresponding document ID as following:
 
@@ -221,4 +221,3 @@ Parameter | Description
 --------- | -----------
 ID | The ID of the document to retrieve
 token | Bearer <Token> setup on headers    
-
