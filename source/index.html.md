@@ -129,7 +129,9 @@ import requests
 url = "http://api.wpci.io/api/v1/renderrepohash"
 
 payload = {
-    "remote_url":"https://git.overleaf.com/22178387mvzzshhfsypt"
+    "remote_url":"https://git.overleaf.com/22178387mvzzshhfsypt",
+    "email":"name@organization.com",
+     "email_body_html":"<p>New body for email</p>"
     }
 headers = {
     'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
@@ -146,7 +148,8 @@ curl -X POST \
   http://api.wpci.io/api/v1/renderrepohash \
   -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
   -H 'Content-Type: application/json' \
-  -d '{"remote_url":"https://git.overleaf.com/22178387mvzzshhfsypt"}'
+  -d '{"remote_url":"https://git.overleaf.com/22178387mvzzshhfsypt", 		 "email":"name@organization.com",
+   "email_body_html":"<p>New body for email</p>"}'
 ```
 
 
@@ -156,104 +159,36 @@ curl -X POST \
 {"response": "done"}
 ```
 
-This endpoint will create a url for share documents wherever you want, just need the following
+This endpoint will send the document to the email specified in the payload.
 
 Parameter | Description
 --------- | -----------
 token | Bearer <Token> setup on headers
 remote_url | The url for github or Overleaf document (String)
+email | The url of the person you want to send the document rendered and signed 
+email_body_html | A customized HTML body for the email sent with the document (this is optional) 
+
+### Render or share a document
+
+To render a document already created you just need the document ID and the Base url.
+
+You can get the Document ID or the full url path by clicking the copy button on 
+
+` https://api.wpci.io/docs/view_docs`
+
+The base url is:
+
+` https://api.wpci.io/docs/pdf/`
+
+And the ID would look like the following:
+
+` Rexchain_1538518131252`
 
 
-### HTTP Request
 
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```python
-import WPCI
-
-api = WPCI.authorize('<TOKEN>')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: <TOKEN>"
-```
-
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
+This full URL will render the PDF and ask you to sign so you can get the document and if present, the NDA.
 
 Parameter | Description
 --------- | -----------
 ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```python
-import WPCI
-
-api = WPCI.authorize('<TOKEN>')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: <TOKEN>"
-```
-
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
+Base Url | The main Url of the Document 
