@@ -24,7 +24,11 @@ You can view code examples in the dark area to the right, and you can switch the
 
 # Authentication
 
-> To authorize, use this code:
+First you need to create an account on: 
+
+[https://api.wpci.io/docs/register](https://api.wpci.io/docs/register)
+
+> Then you can get the API Token by using your user name and password as following:
 
 ```python
 import requests
@@ -36,7 +40,6 @@ payload = {
     "password": "password"
 }
 headers = {
-    'Authorization': "Bearer <TOKEN>",
     'Content-Type': "application/json",
 }
 
@@ -48,14 +51,10 @@ print(response.text)
 ```shell
 curl -X POST \
   https://api.wpci.io/api/v1/login \
-  -H 'Authorization: Bearer <TOKEN>' \
   -d '{"username":"youruser@yourcompany.com","password":"password"}'
 ```
 
-
-> Make sure to replace `<TOKEN>` with your API key.
-
-
+> Make sure to replace the user name and password with your own credentials.
 > The above command returns JSON structured like this:
 
 ```json
@@ -63,8 +62,6 @@ curl -X POST \
   "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc"
 }
 ```
-
-WPCI uses API keys to allow access to the API. You can register a new WPCI API key at our [developer portal](https://).
 
 WPCI expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
@@ -74,24 +71,31 @@ WPCI expects for the API key to be included in all API requests to the server in
 You must replace <code><span><</span>TOKEN></code> with your personal API Token key.
 </aside>
 
-## Create user account
+# Documents
+
+## Create or delete a document link
+
+You can dynamically create or delete unique links to your already created documents with the following code:
 
 ```shell
 curl -X POST \
-  https://api.wpci.io/api/v1/signin \
-  -d '{"email":"youruser@yourcompany.com","password":"password"}'
+  https://api.wpci.io/api/v1/doc_edit \
+   -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
+  -H 'Content-Type: application/json' \
+  -d '{"doc_id":"<DOCUMENT ID>","action":"create"}'
 ```
 
 ```python
 import requests
 
-url = "https://api.wpci.io/api/v1/signin"
+url = "https://api.wpci.io/api/v1/doc_edit"
 
 payload = {
-    "email": "youruser@yourcompany.com",
-    "password": "password"
+   "doc_id":"<DOCUMENT ID>",
+   "action":"create"
 }
 headers = {
+'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
     'Content-Type': "application/json"
 }
 
@@ -103,35 +107,39 @@ print(response.json())
 > The above command returns JSON structured like this:
 
 ```json
-{"response": "user created successfully"}
+{
+    "status":"created", 
+    "doc_link": "https://api.wpci.io/docs/pdf/myDocumentIDandVersion"
+}
 ```
+> or
 
-To get an access token you must have your user and password for WPCI but if you don't have any you can create a new account following next steps.
+```json
+{
+    "status":"deleted", 
+}
+```
 
 
 Parameter | Description
 --------- | -----------
-email | Valid Email (String)
-password | Keep safe your password (String)
-
-<aside class="notice">
-Notice that a token only will send to valid emails
-</aside>
+action | "create" or "delete" are the two options to interact with the document 
+doc_id | This is the ID of the document, provided in your dashboard 
+token | Bearer <Token> setup on headers 
 
 
-# Documents
 
-## Document with Github URL or Overleaf URL
+## Document status
+
+You can get the current status of your document 
 
 ```python
 import requests
 
-url = "http://api.wpci.io/api/v1/renderrepohash"
+url = "http://api.wpci.io/api/v1/doc_status"
 
 payload = {
-    "remote_url":"https://git.overleaf.com/22178387mvzzshhfsypt",
-    "email":"name@organization.com",
-     "email_body_html":"<p>New body for email</p>"
+    "doc_id":"<DOCUMENT ID>"
     }
 headers = {
     'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
@@ -145,55 +153,72 @@ print(response.text)
 
 ```shell
 curl -X POST \
-  http://api.wpci.io/api/v1/renderrepohash \
+  http://api.wpci.io/api/v1/doc_status \
   -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
   -H 'Content-Type: application/json' \
-  -d '{"remote_url":"https://git.overleaf.com/22178387mvzzshhfsypt", 		 "email":"name@organization.com",
-   "email_body_html":"<p>New body for email</p>"}'
+  -d '{"doc_id":"<DOCUMENT ID>"}'
 ```
-
 
 > The above command returns JSON structured like this:
 
 ```json
-{"response": "done"}
+{"status": "signed"}
 ```
 
-This endpoint will send the document to the email specified in the payload.
+> or
+
+```json
+{"status": "unsigned"}
+```
+
+
 
 Parameter | Description
 --------- | -----------
 token | Bearer <Token> setup on headers
-remote_url | The url for github or Overleaf document (String)
-email | The url of the person you want to send the document rendered and signed 
-email_body_html | A customized HTML body for the email sent with the document (this is optional) 
+doc_id | This is the ID of the document, provided in your dashboard 
 
-### Render or share a document
-> This is an example of the full Url to render a Document
 
-```html
-https://api.wpci.io/docs/pdf/<DOCUMENT ID>
+
+## Get the Document
+
+This endpoint will respond with the document as a base 64 PDF file, to get it you need to include the corresponding document ID as following:
+
+```python
+import requests
+
+url = "http://api.wpci.io/api/v1/doc_get"
+
+payload = {
+    "doc_id":"<DOCUMENT ID>"
+    }
+headers = {
+    'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
+    'Content-Type': "application/json"
+    }
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.text)
 ```
 
-To render a document already created you just need the document ID and the Base url.
+```shell
+curl -X POST \
+  http://api.wpci.io/api/v1/doc_get \
+  -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
+  -H 'Content-Type: application/json' \
+  -d '{"doc_id":"<DOCUMENT ID>"}'
+```
 
-You can get the Document ID or the full url path by clicking the copy button on 
+> The above command returns JSON structured like this:
 
-` https://api.wpci.io/docs/view_docs`
+```json
+{"document": "<BASE64 Bytes>"}
+```
 
-The base url is:
-
-` https://api.wpci.io/docs/pdf/`
-
-And the ID would look like the following:
-
-` Rexchain_1538518131252`
-
-
-
-This full URL will render the PDF and ask you to sign so you can get the document and if present, the NDA.
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
-Base Url | The main Url of the Document 
+ID | The ID of the document to retrieve
+token | Bearer <Token> setup on headers    
+
