@@ -169,6 +169,11 @@ email | The url of the person you want to send the document rendered and signed
 email_body_html | A customized HTML body for the email sent with the document (this is optional) 
 
 ### Render or share a document
+> This is an example of the full Url to render a Document
+
+```html
+https://api.wpci.io/docs/pdf/<DOCUMENT ID>
+```
 
 To render a document already created you just need the document ID and the Base url.
 
