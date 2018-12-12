@@ -17,9 +17,16 @@ search: true
 
 # Introduction
 
-Welcome to the WPCI API! You can use our API to access WPCI API endpoints.
+Welcome to the WPCI API! You can use this API to create new, custom links, review a document's status.
 
-You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+The process is the following:
+
+- You need to create an account on wpci.io, register and get your access token,
+- Once your account is created, register your company's details and create a document, you should get a distinct document id. This involves granting access to a Github or Google Docs template,
+- Using this document id, you can create new links for the document, check the status (signed or not signed) and cancel links,
+- Check statistics and status of links whenever you want in wpci.io admin panel.
+
+Please check back soon on our guide to creating templates. You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right. Feel free to contact us at: hola (at) prescrypto.com with any questions.
 
 
 # Authentication
