@@ -23,8 +23,9 @@ The process is the following:
 
 - You need to create an account on wpci.io, register and get your access token,
 - Once your account is created, register your company's details and create a document, you should get a distinct document id. This involves granting access to a Github or Google Docs template,
-- Using this document id, you can create new links for the document, check the status (signed or not signed) and cancel links,
-- Check statistics and status of links whenever you want in wpci.io admin panel.
+- Using this document id, you can create new links for the document using the [**"Create or delete a document link"**](#create-or-delete-a-document-link "Create or delete a document link") endpoint, check the status (signed or not signed) and cancel links,
+- Check statistics and status of links whenever you want from your [wpci.io](https://api.wpci.io "WPCI Admin Panel") admin panel.
+- Ask for help, we're here to make it easy for you: hola (at) prescrypto.com
 
 Please check back soon on our guide to creating templates. You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right. Feel free to contact us at: hola (at) prescrypto.com with any questions.
 
