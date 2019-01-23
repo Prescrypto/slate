@@ -23,7 +23,7 @@ The process is the following:
 
 - You need to create an account on wpci.io, register and get your access token,
 - Once your account is created, register your company's details and create a document, you should get a distinct document id. This involves granting access to a Github or Google Docs template,
-- Using this document id, you can create new links for the document using the [**"Create or delete a document link"**](#create-or-delete-a-document-link "Create or delete a document link") endpoint, check the status (signed or not signed) and cancel links,
+- Using this document id, you can create new links for the document using the [**"Create, get or delete a document link"**](#to-create "Create, get or delete a document link") endpoint, check the status (signed or not signed) and cancel links,
 - Check statistics and status of links whenever you want from your [wpci.io](https://api.wpci.io "WPCI Admin Panel") admin panel.
 - Ask for help, we're here to make it easy for you: hola (at) prescrypto.com
 
@@ -81,33 +81,28 @@ You must replace <code><span><</span>TOKEN></code> with your personal API Token 
 
 # Documents
 
-## Create or delete a document link
+##To Get the document information
 
-You can dynamically create or delete unique links to your already created documents with the following code:
+This endpoint will respond with all the document information, to get it you need to include the corresponding document ID as following:
 
 ```shell
-curl -X POST \
-  https://api.wpci.io/api/v1/doc_edit \
+curl -X GET \
+  https://api.wpci.io/api/v1/documents/<DOCUMENT_ID> \
    -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
-  -H 'Content-Type: application/json' \
-  -d '{"doc_id":"<DOCUMENT ID>","action":"create"}'
+  -H 'Content-Type: application/json'
 ```
 
 ```python
 import requests
 
-url = "https://api.wpci.io/api/v1/doc_edit"
-
-payload = {
-   "doc_id":"<DOCUMENT ID>",
-   "action":"create"
-}
+url = "https://api.wpci.io/api/v1/documents/<DOCUMENT_ID>"
+payload = ""
 headers = {
 'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
     'Content-Type': "application/json"
 }
 
-response = requests.post(url, json=payload, headers=headers)
+response = requests.get(url, data=payload, headers=headers)
 
 print(response.json())
 ```
@@ -116,106 +111,54 @@ print(response.json())
 
 ```json
 {
-    "status":"created", 
-    "doc_link": "https://api.wpci.io/docs/pdf/myDocumentIDandVersion"
+	"org_id": "ORGANIZATION ID", 
+	"wp_name": "NAME", 
+	"wp_url": "https://docs.google.com/presentation/d/<YOUR DOCUMENT ID>/edit?usp=sharing", 
+	"redirect_url": "", 
+	"wp_description": "Click on the Get it! button and enter your email so we can send you a copy of                         this document to your email.", 
+	"wp_getit_btn": "To get the complete document please check this box and fill the following fields", 
+	"main_tex": "main.tex", 
+	"nda_url": "", 
+	"render": "google", 
+	"link_count": 4, 
+	"view_count": 0, 
+	"down_count": 0, 
+	"date": 1547489479, 
+	"doc_id": "<DOCUMENT_ID>"
 }
 ```
-> or
 
-```json
-{
-    "status":"deleted", 
-}
-```
+| Parameter | Description                        |
+| --------- | ---------------------------------- |
+| ID        | The ID of the document to retrieve |
+| token     | Bearer <Token> setup on headers    |
 
 
-Parameter | Description
---------- | -----------
-action | "create" or "delete" are the two options to interact with the document 
-doc_id | This is the ID of the document, provided in your dashboard 
-token | Bearer <Token> setup on headers 
-
-
-
-## Document status
-
-You can get the current status of your document 
-
-```python
-import requests
-
-url = "http://api.wpci.io/api/v1/doc_status"
-
-payload = {
-    "doc_id":"<DOCUMENT ID>"
-    }
-headers = {
-    'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
-    'Content-Type': "application/json"
-    }
-
-response = requests.post(url, json=payload, headers=headers)
-
-print(response.text)
-```
-
-```shell
-curl -X POST \
-  http://api.wpci.io/api/v1/doc_status \
-  -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
-  -H 'Content-Type: application/json' \
-  -d '{"doc_id":"<DOCUMENT ID>"}'
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{"status": "signed"}
-```
-
-> or
-
-```json
-{"status": "unsigned"}
-```
-
-
-
-Parameter | Description
---------- | -----------
-token | Bearer <Token> setup on headers
-doc_id | This is the ID of the document, provided in your dashboard 
-
-
-
-## Get the PDF
+## To get the PDF
 
 This endpoint will respond with the document as a base 64 PDF file, to get it you need to include the corresponding document ID as following:
 
 ```python
 import requests
 
-url = "http://api.wpci.io/api/v1/doc_get"
+url = "http://api.wpci.io/api/v1/documents/pdf/<DOCUMENT_ID>"
 
-payload = {
-    "doc_id":"<DOCUMENT ID>"
-    }
+payload = ""
 headers = {
     'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
     'Content-Type': "application/json"
     }
 
-response = requests.post(url, json=payload, headers=headers)
+response = requests.get(url, json=payload, headers=headers)
 
 print(response.text)
 ```
 
 ```shell
 curl -X POST \
-  http://api.wpci.io/api/v1/doc_get \
+  http://api.wpci.io/api/v1/documents/pdf/<DOCUMENT_ID> \
   -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
-  -H 'Content-Type: application/json' \
-  -d '{"doc_id":"<DOCUMENT ID>"}'
+  -H 'Content-Type: application/json' 
 ```
 
 > The above command returns JSON structured like this:
@@ -229,3 +172,128 @@ Parameter | Description
 --------- | -----------
 ID | The ID of the document to retrieve
 token | Bearer <Token> setup on headers    
+
+
+# Links
+
+##To create
+
+This endpoint will create a new link from an already created document
+
+```shell
+curl -X POST \
+  https://api.wpci.io/api/v1/documents/links/<DOCUMENT_ID> \
+   -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
+  -H 'Content-Type: application/json'
+```
+
+```python
+import requests
+
+url = "https://api.wpci.io/api/v1/documents/links/<DOCUMENT_ID>"
+payload = ""
+headers = {
+'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
+    'Content-Type': "application/json"
+}
+
+response = requests.post(url, data=payload, headers=headers)
+
+print(response.json())
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+	"doc_id": "<DOCUMENT_ID>", 
+	"status": "unsigned", 
+	"view_count": 0, 
+	"signed_count": 0, 
+	"version": "0", 
+	"link": "https://api.wpci.io/docs/pdf/<LINK_ID>"
+	}
+```
+Parameter | Description
+--------- | -----------
+ID | The ID of the document to retrieve
+token | Bearer <Token> setup on headers   
+
+##To get the information
+
+```shell
+curl -X GET \
+  https://api.wpci.io/api/v1/documents/links/<LINK_ID> \
+   -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
+  -H 'Content-Type: application/json'
+```
+
+```python
+import requests
+
+url = "https://api.wpci.io/api/v1/documents/links/<LINK_ID>"
+payload = ""
+headers = {
+'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
+    'Content-Type': "application/json"
+}
+
+response = requests.get(url, data=payload, headers=headers)
+
+print(response.json())
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+	"doc_id": "<DOCUMENT_ID>", 
+	"status": "unsigned", 
+	"view_count": 0, 		
+	"signed_count": 0, 
+	"version": "0", 
+	"link": "https://api.wpci.io/docs/pdf/<LINK_ID>"
+	}
+```
+
+Parameter | Description
+--------- | -----------
+link_id | This is the ID of the link, provided in your dashboard 
+token | Bearer <Token> setup on headers 
+
+##To delete the link
+
+```shell
+curl -X DELETE \
+  https://api.wpci.io/api/v1/documents/links/<LINK_ID> \
+   -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc' \
+  -H 'Content-Type: application/json'
+```
+
+```python
+import requests
+
+url = "https://api.wpci.io/api/v1/documents/links/<LINK_ID>"
+payload = ""
+headers = {
+'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1niJ9.eyJleHAiOjE1NDQzMTI3MTQsImlhdCI6MTU0NDIyMjcxNCwidXNlcm5hbWUiOiJqZXN1cyt0ZXN0QHByZXNjcnlwdG8uY29tIiwicGFzc3dvcmQiOiJhZG1pbjEyMzQifQ.oJGDZuVQbiUrw2j3eGZW_liyV9kWUQKGAlIMszIEwSc",
+    'Content-Type': "application/json"
+}
+
+response = requests.request("DELETE", url, data=payload, headers=headers)
+
+print(response.json())
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{"response": "link deleted"}
+```
+
+
+Parameter | Description
+--------- | -----------
+link_id | This is the ID of the link, provided in your dashboard 
+token | Bearer <Token> setup on headers 
+
