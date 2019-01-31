@@ -103,6 +103,8 @@ curl -X POST \
     "title" : "Titulo",
     "file_name" : "prueba.pdf",
     "logo": "YijhuYIOYGkjiphUYIOdgUTdfxYFLAdfKSHdfUOPpY=="
+    "rexchain_url" : "https://rexchain.io", 
+    "locale": "en"
   }
 }'
 ```
@@ -136,23 +138,35 @@ data ={
   "params" : {
     "title" : "Titulo",
     "file_name" : "Titulo.pdf",
-    "logo": "YijhuYIOYGkjiphUYIOdgUTdfxYFLAdfKSHdfUOPpY=="
+    "logo": "YijhuYIOYGkjiphUYIOdgUTdfxYFLAdfKSHdfUOPpY==",
+    "rexchain_url" : "https://rexchain.io", 
+    "locale": "en"
   }
 }
 
 response = requests.post('http://www.cryptosign.info/api/v1/sign/',json=data, headers=headers)
 
-# save it
+# save the pdf file
 with open("./myfile.pdf", "wb") as f:
-    f.write(response.content)
+    f.write(response.json.get("pdf"))
 
-# or display it
+# or display the complete payload
 print(response.content)
 
 ```
 
 
-> Your response will be the pdf, just can save it wherever you want.
+> Your response will be a json payload with the pdf signed in base64 like the following:
+
+```json
+{
+    "pdf": "JVBERi0xLjcKCjEgMCBvYmogICUgZW50cnkgcG9pbnds+aP==",
+    "audit_url": "https://www.cryptosign.info/audit/049a1a465e571e6f07348e26f34b562530fb158d551ace5074950841eb",
+    "hash": "049a1a465e571e6f07348e26f34b562530fb158d551ace5074950841eb",
+    "signature": "BQ64eN9KfhKRwiWpeoe96suQto3La1QeC49GS4CxlB24H8S9Yzfwz+3x89S7FmHXtX7lQecR4VfZ8O/AaMdulhDwVr1tiFoQ==",
+
+}
+```
 
 This endpoint retrieves the pdf crypto signed.
 
@@ -169,6 +183,8 @@ pdf | A base64 File String | This is your pdf who is attach it to the signed doc
 params.title | String | The title of the given pdf
 params.file_name | String title | The filename with his extension, `mytitle.pdf`
 params.logo | A png base 64 File String | This is your logo who will be show on the signed pdf.
+params.rexchain_url | A url string |url of the rexchain server where you posted the payload of this file
+params.locale | A string | Language in which you want the file titles and labels to be rendered
 signatures.hash | A hash string | This hash string is the sign of a person, represented as string.
 signatures.email | Email String | The email of the person.
 signatures.name | String | The name of the person.
