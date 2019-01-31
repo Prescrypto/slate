@@ -1,7 +1,7 @@
 ---
 title: CryptoSign API Reference
 
-language_tabs:
+language_tabs: # must be one of https://git.io/vQNgJ
   - shell
   - python
 
@@ -20,7 +20,6 @@ search: true
 Welcome to the CryptoSign API Documentation! You can use our API to access Cryptosign API endpoints, which can get information about how auth and to send payloads to retrieve a pdf signed.
 
 We have language bindings in curl on shell and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
 
 # Authentication
 
@@ -178,7 +177,6 @@ signatures.name | String | The name of the person.
 <aside class="success">
   Thats all, enjoy creating crypto signed pdf's!
 </aside>
-
 <aside class="info">
   You can see what timezones are available here `GET http://www.cryptosign.info/api/v1/timezones/` with your bearer token as Authorization or visit <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">wikipedia tz list</a>
 </aside>
